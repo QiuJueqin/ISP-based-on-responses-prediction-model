@@ -1,0 +1,7 @@
+*~
+*.log
+*.bak
+*.tmp
+.idea/
+tmp/
+temp/
