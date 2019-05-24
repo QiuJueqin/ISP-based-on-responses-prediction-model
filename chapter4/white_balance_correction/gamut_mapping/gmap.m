@@ -1,4 +1,4 @@
-function [candidate_neutral_region, gamut_of_maps, vertices_maps, gamut_area] = gmap(rgb, ocp_params, std_gamut, std_illuminant_rgb)
+function [illuminant_gamut, gamut_of_maps, vertices_maps, gamut_area] = gmap(rgb, ocp_params, std_gamut, std_illuminant_rgb)
 
 % convert to [r/g, b/g] plane
 rb = rgb(:, [1, 3]) ./ rgb(:, 2);
@@ -16,7 +16,7 @@ gamut_of_maps_ = [gamut_of_maps(:, 1),...
 candidate_illuminant_rgb = std_illuminant_rgb ./ gamut_of_maps_;
 
 candidate_illuminant_xy_orth = rgb2ocp(candidate_illuminant_rgb, ocp_params);
-candidate_neutral_region = candidate_illuminant_xy_orth(convhull(candidate_illuminant_xy_orth), :);
+illuminant_gamut = candidate_illuminant_xy_orth(convhull(candidate_illuminant_xy_orth), :);
 
 end
 

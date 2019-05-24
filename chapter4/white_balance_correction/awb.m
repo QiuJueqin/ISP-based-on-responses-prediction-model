@@ -19,37 +19,37 @@ end
 
 rgb = img2rgb(img, mask_region);
 
-candidate_neutral_region = gmap(rgb, ocp_params, std_gamut, std_illuminant_rgb);
-
-[x_, y_] = centroid(polyshape(candidate_neutral_region));
-candidate_neutral_region = poly_augment(candidate_neutral_region,...
+% gamut mapping
+illuminant_gamut = gmap(rgb, ocp_params, std_gamut, std_illuminant_rgb);
+[x_, y_] = centroid(polyshape(illuminant_gamut));
+illuminant_gamut = poly_augment(illuminant_gamut,...
                                         [x_, y_],...
                                         AUGMENT_RATIO,...
                                         false);
                                     
-
-neutral_region = poly2_intersect(neutral_region0, candidate_neutral_region);
+intersected_neutral_region = poly2_intersect(neutral_region0, illuminant_gamut);
 
 neutral_region_visualize(neutral_region0,...
-                         candidate_neutral_region,...
-                         neutral_region,...
+                         illuminant_gamut,...
+                         intersected_neutral_region,...
                          xlim, ylim);
 
-if isempty(neutral_region) ||...
-        polyarea(neutral_region(:, 1), neutral_region(:,2)) < NEUTRAL_REGION_AREA_THRESHOLD
+if isempty(intersected_neutral_region) ||...
+        polyarea(intersected_neutral_region(:, 1), intersected_neutral_region(:,2)) < NEUTRAL_REGION_AREA_THRESHOLD
     warning('intersected neutral region is too small.');
-    neutral_region = neutral_region0;
+    intersected_neutral_region = neutral_region0;
 end
 
 try
-    [gains, whist] = npstat(rgb, ocp_params, neutral_region, xlim, ylim, grid_size);
+    % neutral pixels statistics algorithm
+    [gains, whist] = npstat(rgb, ocp_params, intersected_neutral_region, xlim, ylim, grid_size);
 catch e
     warning(e.message);
     gains = grayworld(rgb);
     whist = ones(grid_size, grid_size);
 end
 
-hist_visualize(whist, neutral_region);
+hist_visualize(whist, intersected_neutral_region);
 
 img = img .* reshape(gains, 1, 1, 3);
 

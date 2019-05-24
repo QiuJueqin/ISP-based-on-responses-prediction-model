@@ -67,7 +67,7 @@ for i = 1:numel(database)
                  
 	pause(.5);
 
-	save_fig(illuminant_xy_orth, result_dir, img_name);
+ 	save_fig(illuminant_xy_orth, result_dir, img_name);
     
     errors(i) = angular_err(illuminant_rgb, 1./gains);
     
@@ -158,6 +158,12 @@ end
 
 function save_fig(illuminant_xy_orth, save_dir, img_name)
 hfigs = get(groot, 'Children');
+
+if numel(hfigs) ~= 2
+    warning('figures are not found.');
+    return;
+end
+
 hfig_hist = hfigs(1);
 hfig_gamut = hfigs(2);
 
