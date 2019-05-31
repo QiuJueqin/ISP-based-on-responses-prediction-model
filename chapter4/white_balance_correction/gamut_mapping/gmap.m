@@ -38,7 +38,7 @@ while is_empty && nb_iter < NB_ITER_THRESHOLD
     for i = 1:N
         vmaps{i} = std_poly ./ poly(i,:);
     end       
-    map = poly_intersect(vmaps);
+    map = polyn_intersect(vmaps);
     if isempty(map)
         std_poly = poly_augment(std_poly, AUGMENT_CENTER, AUGMENT_RATIO);
     else

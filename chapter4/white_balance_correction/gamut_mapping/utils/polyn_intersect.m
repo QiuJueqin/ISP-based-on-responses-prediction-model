@@ -1,5 +1,5 @@
-function intersection = poly_intersect(polygons)
-% POLY_INTERSECT finds intersection of multiple polygons using a recursive
+function intersection = polyn_intersect(polygons)
+% POLYN_INTERSECT finds intersection of multiple polygons using a recursive
 % procedure
 %
 % INPUTS:
@@ -22,8 +22,8 @@ elseif numel(polygons) == 2
 else
     polygons_group1 = polygons(1:ceil(numel(polygons)/2));
     polygons_group2 = polygons(ceil(numel(polygons)/2)+1:end);
-    intersection_group1 = poly_intersect(polygons_group1);
-    intersection_group2 = poly_intersect(polygons_group2);
+    intersection_group1 = polyn_intersect(polygons_group1);
+    intersection_group2 = polyn_intersect(polygons_group2);
     intersection = poly2_intersect(intersection_group1, intersection_group2);
 end
 
