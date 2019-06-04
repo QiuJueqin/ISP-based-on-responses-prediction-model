@@ -1,4 +1,7 @@
 function color_diff(xyz_reference, xyz)
+% compare color differences between test samples XYZ and reference samples 
+% XYZ_REFERENCE on CIE1976 a*b* chromaticity plane
+
 
 GRAY = [.5, .5, .5];
 SCATTER_SIZE = 160;
@@ -12,7 +15,7 @@ lab = xyz2lab(xyz);
 ab = lab(:, [2, 3]);
 
 hax = cie_diagram('plane', 'ab',...
-                  'grid', 'off', 'xlim', [-65, 70], 'ylim', [-60, 90]);
+                  'grid', 'on', 'xlim', [-80, 80], 'ylim', [-60, 90]);
 set(gcf, 'unit', 'centimeters', 'position', [5, 5, 24, 20]);
 hold on;
 
@@ -31,12 +34,13 @@ for i = 1:size(xyz_reference, 1)
 end
 
 % phantom scatter
-hs(1) = scatter(hax, inf, inf, SCATTER_SIZE, GRAY, 'square', 'filled',...
+hs(1) = scatter(hax, inf, inf, 180, GRAY, 'square', 'filled',...
                 'markeredgecolor', 'k', 'linewidth', 1.5);
-hs(2) = scatter(hax, inf, inf, SCATTER_SIZE, GRAY, '^', 'filled',...
+hs(2) = scatter(hax, inf, inf, 180, GRAY, '^', 'filled',...
                 'markeredgecolor', 'k', 'linewidth', 1.5);
 legend(hs, {'Ground-Truth', 'Color Corrected'},...
-       'fontname', 'times new roman', 'fontsize', 20);
+       'fontname', 'times new roman', 'fontsize', 20,...
+       'location', 'southwest', 'box', 'off');
 end
 
 

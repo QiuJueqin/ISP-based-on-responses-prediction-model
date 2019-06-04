@@ -1,7 +1,8 @@
-function [img, gains] = awb(img,...
-                            ocp_params, neutral_region0, std_gamut, std_illuminant_rgb,...
-                            xlim, ylim, grid_size,...
-                            mask_region)
+function [img_wb, gains] = awb(img,...
+                               ocp_params,...
+                               neutral_region0, std_gamut, std_illuminant_rgb,...
+                               xlim, ylim, grid_size,...
+                               mask_region)
 % auto white-balancing using gamut mapping and neutral pixels statistics
 
 AUGMENT_RATIO = 0.02;
@@ -51,9 +52,9 @@ end
 
 hist_visualize(whist, intersected_neutral_region);
 
-img = img .* reshape(gains, 1, 1, 3);
+img_wb = img .* reshape(gains, 1, 1, 3);
 
-img = max(min(img, 1), 0);
+img_wb = max(minimg_wbimg, 1), 0);
 
 end
 

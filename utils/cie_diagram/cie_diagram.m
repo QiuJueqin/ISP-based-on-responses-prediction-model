@@ -99,8 +99,8 @@ if strcmpi(args.plane, 'ab')
     line(hax, [-120, 120], [0, 0], 'linestyle', ':', 'color', [.5, .5, .5], 'linewidth', 1);
 end
 
-xlabel(labels{1}, 'fontname', 'times new roman', 'fontsize', 48, 'interpreter', 'latex');
-ylabel(labels{2}, 'fontname', 'times new roman', 'fontsize', 48, 'interpreter', 'latex');
+xlabel(labels{1}, 'fontname', 'times new roman', 'fontsize', 50, 'interpreter', 'latex');
+ylabel(labels{2}, 'fontname', 'times new roman', 'fontsize', 50, 'interpreter', 'latex');
 
 axis equal;
 xlim(args.xlim);

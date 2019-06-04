@@ -24,13 +24,20 @@ beta = params.beta;
 gamma = params.gamma;
 C = params.C;
 
-[height, width, ~] = size(img);
-
-% reshape to a N*3 matrix where N is the number of pixels in one channel
-responses = reshape(img, height*width, 3);
+if ndims(img) == 3
+    % reshape to a N*3 matrix where N is the number of pixels in one channel
+    [height, width, ~] = size(img);
+    responses = reshape(img, height*width, 3);
+else
+    responses = img;
+end
 
 % inverse nonlinear function
-responses_linear = (g .* (real(((responses - beta) ./ g) .^ (1./gamma)) - alpha)) * C^(-1);
+responses_linear = g .* ( ((real(((responses - beta) ./ g) .^ (1./gamma)) - alpha)) * C^(-1) );
 
-% reshape back to the original size
-img_linear = reshape(responses_linear, height, width, 3);
+if ndims(img) == 3
+    % reshape back to the original size
+    img_linear = reshape(responses_linear, height, width, 3);
+else
+    img_linear = responses_linear;
+end
