@@ -42,22 +42,22 @@ responses_bb = responses_predict(spectra_bb/2, WAVELENGTHS, camera_params, gains
 %% find optimal weights and theta
 
 w0 = [1/3; 1/3; 1/3];
-xy_dl = [log((w0(1)*responses_dl(:,1)) ./ (responses_dl*w0)),...
-         log((w0(3)*responses_dl(:,3)) ./ (responses_dl*w0))];
-xy_bb = [log((w0(1)*responses_bb(:,1)) ./ (responses_bb*w0)),...
-         log((w0(3)*responses_bb(:,3)) ./ (responses_bb*w0))];
-p_dl = polyfit(xy_dl(:,1), xy_dl(:,2), 1);
-p_bb = polyfit(xy_bb(:,1), xy_bb(:,2), 1);
+xy_dl = [log((w0(1) * responses_dl(:, 1)) ./ (responses_dl * w0)),...
+         log((w0(3) * responses_dl(:, 3)) ./ (responses_dl * w0))];
+xy_bb = [log((w0(1) * responses_bb(:, 1)) ./ (responses_bb * w0)),...
+         log((w0(3) * responses_bb(:, 3)) ./ (responses_bb * w0))];
+p_dl = polyfit(xy_dl(:, 1), xy_dl(:, 2), 1);
+p_bb = polyfit(xy_bb(:, 1), xy_bb(:, 2), 1);
 
 theta0 = (-atan(p_dl(1)) + -atan(p_bb(1))) / 2;
 
 w_handle = @(x) [x(1); x(2); x(3)];
 theta_handle = @(x) x(4);
 
-xy_dl_handle = @(x) [log(([1,0,0]*w_handle(x)*responses_dl(:,1)) ./ (responses_dl*w_handle(x))),...
-                     log(([0,0,1]*w_handle(x)*responses_dl(:,3)) ./ (responses_dl*w_handle(x)))];
-xy_bb_handle = @(x) [log(([1,0,0]*w_handle(x)*responses_bb(:,1)) ./ (responses_bb*w_handle(x))),...
-                     log(([0,0,1]*w_handle(x)*responses_bb(:,3)) ./ (responses_bb*w_handle(x)))];
+xy_dl_handle = @(x) [log(([1, 0, 0] * w_handle(x) * responses_dl(:, 1)) ./ (responses_dl * w_handle(x))),...
+                     log(([0, 0, 1] * w_handle(x) * responses_dl(:, 3)) ./ (responses_dl * w_handle(x)))];
+xy_bb_handle = @(x) [log(([1, 0, 0] * w_handle(x) * responses_bb(:, 1)) ./ (responses_bb * w_handle(x))),...
+                     log(([0, 0, 1] * w_handle(x) * responses_bb(:, 3)) ./ (responses_bb * w_handle(x)))];
 
 Z = zeros(1, length(coefs));
 Z(26) = 1; % index for D65
@@ -84,8 +84,8 @@ init = [w0; theta0];
 x = fmincon(loss, init, [], [], Aeq, beq, lb, ub);
 w = x(1:3);
 theta = x(4);
-xy0 =  Z * [log((w(1)*responses_dl(:,1)) ./ (responses_dl*w)),...
-            log((w(3)*responses_dl(:,3)) ./ (responses_dl*w))];
+xy0 =  Z * [log((w(1) * responses_dl(:, 1)) ./ (responses_dl * w)),...
+            log((w(3) * responses_dl(:, 3)) ./ (responses_dl * w))];
 
 
 %% find optimal sigma
@@ -121,7 +121,7 @@ ocp_params.theta = theta;
 ocp_params.sigma = sigma;
 
 figure; hold on;
-scatter(rb_dl(:,1), rb_dl(:,2));
-scatter(rb_bb(:,1), rb_bb(:,2));
-scatter(rb_duv(:,1), rb_duv(:,2));
+scatter(rb_dl(:, 1), rb_dl(:, 2));
+scatter(rb_bb(:, 1), rb_bb(:, 2));
+scatter(rb_duv(:, 1), rb_duv(:, 2));
 axis equal

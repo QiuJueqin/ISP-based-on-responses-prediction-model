@@ -1,3 +1,5 @@
+% color correction calibration for Nikon D3x
+
 clear; close all; clc;
 
 DELTA_LAMBDA = 5;
@@ -5,9 +7,6 @@ WAVELENGTHS = 400:DELTA_LAMBDA:700;
 GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms
 CC_MODEL = 'root6x3';
-
-% load canonical illuminant spd
-canonical_illuminant_spd = xlsread('cie.15.2004.tables.xls', 1, 'B27:B87')';
 
 % load 'unknown' illuminant spds
 unknown_illuminant_names = {'D65', 'A', 'D50', 'CWF', 'TL84'};

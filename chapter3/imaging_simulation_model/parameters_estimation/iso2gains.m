@@ -10,10 +10,10 @@ function gains = iso2gains(iso, iso_profile)
 % OUTPUTS:
 % gains:          predicted system gains.
 
-if iso < min(iso_profile.isos) || iso >= max(iso_profile.isos)
-    error('The iso levels recorded in the profile are in the range of %d to %d',...
-          min(iso_profile.gains),...
-          max(iso_profile.gains));
+if iso < min(iso_profile.isos) || iso > max(iso_profile.isos)
+    error('the input iso level exceeds the range [ISO%d, ISO%d] recorded in the profile.',...
+          min(iso_profile.isos),...
+          max(iso_profile.isos));
 end
 
 gains = interp1(iso_profile.isos, iso_profile.gains, iso, 'linear');

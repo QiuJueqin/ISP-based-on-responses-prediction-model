@@ -16,7 +16,7 @@ function img_linear = raw2linear(img, params, g)
 % img_linear:       linear output image.
 
 assert(isa(img, 'double'));
-assert(max(img(:)) <= 1 && min(img(:)) >= 0);
+assert(all(img >=0 & img <= 1, 'all'));
 assert(length(g) == 3);
 
 alpha = params.alpha;

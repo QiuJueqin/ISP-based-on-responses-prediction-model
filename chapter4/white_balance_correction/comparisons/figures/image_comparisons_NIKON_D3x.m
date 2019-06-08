@@ -26,7 +26,7 @@ record_folder = fullfile(data_path.path,...
 record_dirs = fullfile(record_folder, strcat(algorithms, '_results.txt'));
 for i = 1:numel(image_names)
     img_name = image_names{i};
-    img_dir = fullfile('f:\data\thesis\white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset', [img_name, '.png']);
+    img_dir = fullfile(data_path.path, 'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset', [img_name, '.png']);
     img = imread(img_dir);
     img = imresize(img, 1/4);
     

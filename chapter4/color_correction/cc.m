@@ -1,5 +1,5 @@
 function img_cc = cc(img, gains, cc_profile)
-% color correction for input image according to white-balance gains
+% color correction for input image according to its white-balance gains
 %
 % IMPORTANT NOTE:
 % Since the color correction matrices were calibrated using LINEAR camera
