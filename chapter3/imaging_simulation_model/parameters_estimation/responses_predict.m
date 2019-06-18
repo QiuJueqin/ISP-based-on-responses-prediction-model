@@ -1,6 +1,6 @@
-function [responses, saturation] = responses_predict(spectra, wavelengths, params, g, T, delta_lambda)
+function [responses, saturation] = responses_predict(spectra, wavelengths, params, g, T, delta_lambda, is_cutoff)
 % RESPONSES_PREDICT predicts camera raw responses for the given spectral
-% radiance data using the imaging simulation model.
+% radiance data using the response prediction model.
 %
 % INPUTS:
 % spectra:          M*N spectral radiances matrix, where M is the number of
@@ -26,6 +26,8 @@ function [responses, saturation] = responses_predict(spectra, wavelengths, param
 %                   just use T = T0 * ones(M, 1) to get M duplicates.
 % delta_lambda:     wavelength interval for 'spectra' in nm. If not given,
 %                   it will be calculated as delta_lambda = 400/(N-1).
+% is_cutoff:        set to true to cut off output image within range [0,
+%                   1]. (default = true)
 %
 % OUTPUTS:
 % responses:        N*3 matrix for the predicted camera raw responses
@@ -37,6 +39,10 @@ function [responses, saturation] = responses_predict(spectra, wavelengths, param
 
 WAVELENGTH_RANGE = [380, 780];
 WAVELENGTH_INTERVAL = 5;
+
+if nargin < 7
+    is_cutoff = true;
+end
 
 kappa = params.kappa;
 cam_wavelengths = params.wavelengths;
@@ -87,5 +93,7 @@ responses = g .* real((kappa * delta_lambda * diag(T) * spectra * cam_spectra * 
 
 saturation = max(responses(:));
 
-responses = max(min(responses, 1), 0);
+if is_cutoff
+    responses = max(min(responses, 1), 0);
+end
 

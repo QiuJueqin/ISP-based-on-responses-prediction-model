@@ -20,7 +20,7 @@ for i = 1:numel(camera_names)
     
     hax = subplot(1, 3, i);
     pos = get(hax, 'OuterPosition');
-    pos = pos + [-0.02, 0.02, 0.04, -0.04];
+    pos = pos + [-0.025, 0.02, 0.05, -0.04];
     set(hax, 'OuterPosition', pos);
     
     hold on;
@@ -29,7 +29,8 @@ for i = 1:numel(camera_names)
     plot(wavelengths, spectra(:,2), 'color', GREEN, 'linewidth', 3);
     plot(wavelengths, spectra(:,3), 'color', BLUE, 'linewidth', 3);
     box on; grid on
-    set(gca, 'linewidth', 1.5, 'fontsize', 22, 'xtick', 380:100:780, 'ytick', 0:0.2:1);
+    set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
+        'xtick', 380:100:780, 'ytick', 0:0.2:1);
     xlim([380, 780]);
     ylim([0, 1.1]);
     xlabel('Wavelength (nm)', 'fontname', 'times new roman', 'fontsize', 28);

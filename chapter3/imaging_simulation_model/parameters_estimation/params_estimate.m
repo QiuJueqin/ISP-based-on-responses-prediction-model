@@ -38,6 +38,8 @@ function [p, loss, responses_pred] = params_estimate(spectra, responses, g, T, d
 %                   ground-truth responses.
 % responses_pred:   predicted responses using estimated parameters.
 
+WAVELENGTHS = 380:5:780;
+
 if nargin == 6
     reg_factor = 0.02;
     smooth_threshold = 5;
@@ -189,8 +191,7 @@ beta = reshape(params(3*N+4 : 3*N+6), 1, 3);
 gamma = reshape(params(3*N+7 : 3*N+9), 1, 3);
 C = reshape(params(3*N+10 : 3*N+18), 3, 3);
 
-p.wavelengths = 
-
+p.wavelengths = WAVELENGTHS;
 p.kappa0 = max(cam_spectra0(:));
 p.cam_spectra0 = cam_spectra0 / p.kappa0;
 p.alpha0 = alpha0;

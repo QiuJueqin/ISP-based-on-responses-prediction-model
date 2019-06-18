@@ -29,10 +29,10 @@ if isempty(canonical_illuminant_idx)
     error('canonical illuminant (D65) is not found.');
 end
 
-canonical_illuminant_gain = cc_profile.gains(canonical_illuminant_idx, :);
-uv_train = gain2uv(cc_profile.gains, canonical_illuminant_gain);
+canonical_illuminant_gains = cc_profile.gains(canonical_illuminant_idx, :);
+uv_train = gain2uv(cc_profile.gains, canonical_illuminant_gains);
 
-uv = gain2uv(gains, canonical_illuminant_gain);
+uv = gain2uv(gains, canonical_illuminant_gains);
 
 distances = sum((uv_train - uv).^2, 2);
 [~, illuminant_idx] = min(distances);
@@ -60,10 +60,10 @@ global rgb2xyz
 
 assert(size(gains, 2) == 3);
 
-cam_rgb = gains ./ gains0;
-cam_rgb = cam_rgb ./ max(cam_rgb, [], 2);
+rgb = gains0 ./ gains; % camera rgb of illuminant
+rgb = rgb ./ max(rgb, [], 2);
 
-xyz_pred = cam_rgb * rgb2xyz;
+xyz_pred = rgb * rgb2xyz;
 xyz_pred = xyz_pred ./ xyz_pred(:, 2); % normalized such that Y = 1
 
 xy_pred = xyz_pred(:, [1, 2]) ./ sum(xyz_pred, 2);

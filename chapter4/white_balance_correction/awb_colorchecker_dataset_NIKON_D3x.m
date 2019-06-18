@@ -37,17 +37,17 @@ if ~exist(record_dir, 'file')
 end
 
 % read test images
-database_dir = fullfile(data_path.path,...
+dataset_dir = fullfile(data_path.path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
-database = dir(database_dir);
+dataset = dir(dataset_dir);
 
-errors = zeros(numel(database), 1);
+errors = zeros(numel(dataset), 1);
 
-for i = 1:numel(database)
-    img_dir = fullfile(database(i).folder, database(i).name);
+for i = 1:numel(dataset)
+    img_dir = fullfile(dataset(i).folder, dataset(i).name);
     [~, img_name, ~] = fileparts(img_dir);
     
-    fprintf('Processing %s (%d/%d)... ', img_name, i, numel(database));
+    fprintf('Processing %s (%d/%d)... ', img_name, i, numel(dataset));
     tic;
     
     mask_dir = strrep(img_dir, '.png', '_mask.txt');
