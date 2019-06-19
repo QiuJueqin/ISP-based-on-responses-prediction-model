@@ -6,10 +6,10 @@ CMAP = [brewermap(32, 'Reds');...
         brewermap(32, 'Greens');...
         brewermap(32, 'Blues')];
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load profile
-load(fullfile(data_path.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
+load(fullfile(config.data_path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
 
 for i = 1:numel(nonuniformity_profile.params)
     coefs = nonuniformity_profile.params(i).coefs;

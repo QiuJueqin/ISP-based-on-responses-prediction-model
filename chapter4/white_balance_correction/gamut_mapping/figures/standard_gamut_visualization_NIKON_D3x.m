@@ -12,7 +12,7 @@ GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms exposure time
 RED = [255, 84, 84]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 spectral_reflectances_database = xlsread('spectral_reflectances_database.xlsx', 1, 'D3:CF9272');
 % keep only 400-700nm
@@ -57,7 +57,7 @@ ylabel('Spectral Reflectance', 'fontsize', 26, 'fontname', 'times new roman');
 %% visualize standard gamut
 
 % load parameters of imaging simulation model
-params_dir = fullfile(data_path.path,...
+params_dir = fullfile(config.data_path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 

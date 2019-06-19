@@ -7,10 +7,10 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load data
-load(fullfile(data_path.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
+load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
 
 wavelengths = 380:DELTA_LAMBDA:780;
 
@@ -101,7 +101,7 @@ T = (1/8) * ones(M, 1); % 1/8s
 linestyples = {'-', ':', '--'};
 figure; hold on;
 for i = 1:numel(noise_profiles)
-    load(fullfile(data_path.path, noise_profiles{i}));
+    load(fullfile(config.data_path, noise_profiles{i}));
     g = noise_profile.g0_estimate;
     kappa0 = params.kappa0;
     cam_spectra0 = params.cam_spectra0;

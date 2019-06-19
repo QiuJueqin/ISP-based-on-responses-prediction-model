@@ -3,7 +3,7 @@ clear; close all; clc;
 GAP = 0.032;
 MATRIX = getcam2xyz('Nikon D3x');
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 algorithms = {'gray_edge_order1',...
               'gray_edge_order2',...
@@ -21,12 +21,12 @@ scales = [3.2, 2.5, 3, 2.2, 2];
 
 height = (1 - GAP * (numel(algorithms) + 1)) / (numel(algorithms) + 1);
 
-record_folder = fullfile(data_path.path,...
+record_folder = fullfile(config.data_path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\results\comparisons');
 record_dirs = fullfile(record_folder, strcat(algorithms, '_results.txt'));
 for i = 1:numel(image_names)
     img_name = image_names{i};
-    img_dir = fullfile(data_path.path, 'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset', [img_name, '.png']);
+    img_dir = fullfile(config.data_path, 'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset', [img_name, '.png']);
     img = imread(img_dir);
     img = imresize(img, 1/4);
     

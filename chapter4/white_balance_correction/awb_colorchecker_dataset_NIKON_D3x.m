@@ -12,19 +12,19 @@ XLIM = [-0.6, 1.2];
 YLIM = [-0.4, 0.6];
 GRID_SIZE = 128;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load ocp parameters
-ocp_params_dir = fullfile(data_path.path,...
+ocp_params_dir = fullfile(config.data_path,...
                           'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
 load(ocp_params_dir);
 
 % load standard gamut
-std_gamut_dir = fullfile(data_path.path,...
+std_gamut_dir = fullfile(config.data_path,...
                          'white_balance_correction\gamut_mapping\NIKON_D3x\std_gamut.mat');
 load(std_gamut_dir);
 
-result_dir = fullfile(data_path.path,...
+result_dir = fullfile(config.data_path,...
                        'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\results');
 if ~exist(result_dir, 'dir')                   
     mkdir(result_dir);
@@ -37,7 +37,7 @@ if ~exist(record_dir, 'file')
 end
 
 % read test images
-dataset_dir = fullfile(data_path.path,...
+dataset_dir = fullfile(config.data_path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
 dataset = dir(dataset_dir);
 

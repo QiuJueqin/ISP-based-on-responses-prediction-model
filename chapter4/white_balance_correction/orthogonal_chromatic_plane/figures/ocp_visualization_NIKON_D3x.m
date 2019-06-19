@@ -8,10 +8,10 @@ NB_TEMPERATURES = 50;
 RED = [255, 84, 84]/255;
 BLUE = [0, 128, 220]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load parameters of imaging simulation model
-params_dir = fullfile(data_path.path,...
+params_dir = fullfile(config.data_path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 params = load(params_dir);
 
@@ -45,7 +45,7 @@ responses_duv = responses_predict(spectra_duv/2, WAVELENGTHS, params.params, GAI
 
 %% visualization
 
-ocp_params_dir = fullfile(data_path.path,...
+ocp_params_dir = fullfile(config.data_path,...
                           'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
 load(ocp_params_dir);
 

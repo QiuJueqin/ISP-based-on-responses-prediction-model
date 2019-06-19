@@ -4,7 +4,7 @@ clear; close all; clc;
 
 CAMERA_MODEL = 'NIKON_D3x';
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 n1 = 16;
 
@@ -18,7 +18,7 @@ folders = {'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP30_ISO400_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP60_ISO800_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 for i = 1:numel(folders)
     fprintf('============================================================\n');
@@ -38,5 +38,5 @@ for i = 1:numel(folders)
     sigmaN_estimates.(params{i}) = sigmaN_estimate_map;
 end
 
-save_dir = fullfile(data_path.path, 'noise_calibration\NIKON_D3x\sigmaN_estimates.mat');
+save_dir = fullfile(config.data_path, 'noise_calibration\NIKON_D3x\sigmaN_estimates.mat');
 save(save_dir, 'sigmaN_estimates', '-v7.3');

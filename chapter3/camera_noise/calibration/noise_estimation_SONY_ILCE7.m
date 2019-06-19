@@ -5,7 +5,7 @@ clear; close all;
 CAMERA_MODEL = 'ILCE7';
 INBIT = 12;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 n1 = 16;
 matraw_params = {'inbit', INBIT, 'outbit', 'same'};
@@ -20,7 +20,7 @@ folders = {'noise_calibration\ILCE7\EXP8_ISO100_F4_55mm',...
            'noise_calibration\ILCE7\EXP30_ISO400_F4_55mm',...
            'noise_calibration\ILCE7\EXP60_ISO800_F4_55mm',...
            'noise_calibration\ILCE7\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 for i = 1:numel(folders)
     fprintf('============================================================\n');
@@ -40,5 +40,5 @@ for i = 1:numel(folders)
     sigmaN_estimates.(params{i}) = sigmaN_estimate_map;
 end
 
-save_dir = fullfile(data_path.path, 'noise_calibration\ILCE7\sigmaN_estimates.mat');
+save_dir = fullfile(config.data_path, 'noise_calibration\ILCE7\sigmaN_estimates.mat');
 save(save_dir, 'sigmaN_estimates', '-v7.3');

@@ -2,23 +2,23 @@
 
 clear; close all; clc;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % read camera parameters
-params_dir = fullfile(data_path.path,...
+params_dir = fullfile(config.data_path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 
 % read iso profile
-iso_profile = load(fullfile(data_path.path,...
+iso_profile = load(fullfile(config.data_path,...
                             'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
                         
 % read color correction profile
-cc_profile = load(fullfile(data_path.path,...
+cc_profile = load(fullfile(config.data_path,...
                            'color_correction\NIKON_D3x\cc_profile.mat'));
 
 % read test images
-dataset_dir = fullfile(data_path.path,...
+dataset_dir = fullfile(config.data_path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
 dataset = dir(dataset_dir);
 
@@ -53,7 +53,7 @@ for i = 1:numel(dataset)
     img_cc = cc(img_wb, awb_gains, cc_profile);
  	img_cc = lin2rgb(img_cc);
     
-    img_save_dir = fullfile(data_path.path,...
+    img_save_dir = fullfile(config.data_path,...
                             'color_correction\NIKON_D3x\colorchecker_dataset_results',...
                             sprintf('%s.png', img_name));
     imwrite(img_cc, img_save_dir);

@@ -10,10 +10,10 @@ WIDTH = 2104;
 KNOTS = [0, .15, .3, .5, .7, .85, 1];
 ORDER = 3;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load data
-load(fullfile(data_path.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
+load(fullfile(config.data_path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
 
 for i = 1:numel(nonuniformity_profile.params)
     coefs = nonuniformity_profile.params(i).coefs;

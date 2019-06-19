@@ -21,7 +21,7 @@ CMAP = [117, 155, 186;...
         220, 104, 146;...
         121, 119, 120]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % some illuminants' spds
 daylight_series_wavelengths = 380:10:780;
@@ -79,12 +79,12 @@ nb_illuminant_types = numel(illuminants_database_spds);
 
 
 % load parameters of imaging simulation model
-params_dir = fullfile(data_path.path,...
+params_dir = fullfile(config.data_path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 
 % load ocp parameters
-ocp_params_dir = fullfile(data_path.path,...
+ocp_params_dir = fullfile(config.data_path,...
                           'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
 load(ocp_params_dir);
 

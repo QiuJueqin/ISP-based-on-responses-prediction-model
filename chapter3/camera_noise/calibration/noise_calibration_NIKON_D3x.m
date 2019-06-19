@@ -4,7 +4,7 @@ clear; close all;
 
 CAMERA_MODEL = 'NIKON_D3x';
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 n1 = 16; n3 = 16; n5 = 16;
 n2 = 8; n4 = 8;
@@ -14,7 +14,7 @@ folders = {'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP30_ISO400_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP60_ISO800_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 for i = 1:numel(folders)
     [~, params] = fileparts(folders{i});

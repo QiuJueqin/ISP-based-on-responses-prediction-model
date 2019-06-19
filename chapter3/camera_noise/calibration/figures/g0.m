@@ -8,7 +8,7 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 iso_levels = [100, 200, 400, 800, 1600];
 
@@ -17,7 +17,7 @@ folders = {'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP30_ISO400_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP60_ISO800_F4_55mm',...
            'noise_calibration\NIKON_D3x\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 g0 = zeros(numel(folders), 3);
 for i = 1:numel(folders)
@@ -56,16 +56,12 @@ ylabel('Estimated Gain ($\hat{g}_0)$', 'fontsize', 26, 'fontname', 'times new ro
 % run noise_calibration_SONY_ILCE7.m first to get 'noise_calib_profile.mat'
 % files
 
-data_path = load('global_data_path.mat');
-
-iso_levels = [100, 200, 400, 800, 1600];
-
 folders = {'noise_calibration\ILCE7\EXP8_ISO100_F4_55mm',...
            'noise_calibration\ILCE7\EXP15_ISO200_F4_55mm',...
            'noise_calibration\ILCE7\EXP30_ISO400_F4_55mm',...
            'noise_calibration\ILCE7\EXP60_ISO800_F4_55mm',...
            'noise_calibration\ILCE7\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 g0 = zeros(numel(folders), 3);
 for i = 1:numel(folders)

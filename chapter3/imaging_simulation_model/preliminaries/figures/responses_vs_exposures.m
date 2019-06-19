@@ -6,10 +6,10 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load data captured under ISO100
-load(fullfile(data_path.path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO100.mat'));
+load(fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO100.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
 hax = axes(hfig, 'position', [.125 .15 .8 .8]);
@@ -24,7 +24,7 @@ hline3 = semilogx(exposures, mean_values(:, 3), 'color', BLUE, 'linestyle', ':',
                   'markerfacecolor', BLUE, 'linewidth', 2.5, 'markersize', 10);
 
 % load data captured under ISO800
-load(fullfile(data_path.path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO800.mat'));
+load(fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO800.mat'));
 
 hline4 = semilogx(exposures, mean_values(:, 1), 'color', RED, 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);
@@ -63,7 +63,7 @@ ylabel('Raw Response (in 14-bit)', 'fontsize', 26, 'fontname', 'times new roman'
 clearvars -except RED GREEN BLUE data_path
 
 % load data captured under ISO100
-load(fullfile(data_path.path, 'response_prediction\preliminaries\ILCE7\responses_vs_exposures_ISO100.mat'));
+load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_exposures_ISO100.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
 hax = axes(hfig, 'position', [.125 .15 .8 .8]);
@@ -78,7 +78,7 @@ hline3 = semilogx(exposures, mean_values(:, 3), 'color', BLUE, 'linestyle', ':',
                   'markerfacecolor', BLUE, 'linewidth', 2.5, 'markersize', 10);
 
 % load data captured under ISO800
-load(fullfile(data_path.path, 'response_prediction\preliminaries\ILCE7\responses_vs_exposures_ISO800.mat'));
+load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_exposures_ISO800.mat'));
 
 hline4 = semilogx(exposures, mean_values(:, 1), 'color', RED, 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);

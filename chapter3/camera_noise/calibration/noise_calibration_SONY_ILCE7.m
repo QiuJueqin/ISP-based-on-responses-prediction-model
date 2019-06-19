@@ -5,7 +5,7 @@ clear; close all;
 CAMERA_MODEL = 'ILCE7';
 INBIT = 12;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 n1 = 16; n3 = 16; n5 = 16;
 n2 = 8; n4 = 8;
@@ -16,7 +16,7 @@ folders = {'noise_calibration\ILCE7\EXP8_ISO100_F4_55mm',...
            'noise_calibration\ILCE7\EXP30_ISO400_F4_55mm',...
            'noise_calibration\ILCE7\EXP60_ISO800_F4_55mm',...
            'noise_calibration\ILCE7\EXP125_ISO1600_F4_55mm'};
-folders = fullfile(data_path.path, folders);
+folders = fullfile(config.data_path, folders);
 
 for i = 1:numel(folders)
     [~, params] = fileparts(folders{i});

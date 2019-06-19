@@ -7,11 +7,11 @@ CMAP = brewermap(64, 'Reds');
 CMAP = flipud(CMAP(1:42, :));
 LINECOLOR = [.4, .4, .4];
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
-profile = load(fullfile(data_path.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
+profile = load(fullfile(config.data_path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
 
-contents = dir(fullfile(data_path.path, 'nonuniformity_correction\OV8858'));
+contents = dir(fullfile(config.data_path, 'nonuniformity_correction\OV8858'));
 for i = 3:numel(contents)
     if contents(i).isdir
         contents_ = dir(fullfile(contents(i).folder, [contents(i).name, '\*.pgm']));

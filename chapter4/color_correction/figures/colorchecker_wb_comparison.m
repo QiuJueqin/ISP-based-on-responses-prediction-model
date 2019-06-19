@@ -5,10 +5,10 @@ WAVELENGTHS = 400:DELTA_LAMBDA:700;
 GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load parameters of imaging simulation model
-params_dir = fullfile(data_path.path,...
+params_dir = fullfile(config.data_path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 

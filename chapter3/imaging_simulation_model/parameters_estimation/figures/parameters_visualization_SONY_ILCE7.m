@@ -7,10 +7,10 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-data_path = load('global_data_path.mat');
+config = parse_data_config;
 
 % load data
-load(fullfile(data_path.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters.mat'));
+load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters.mat'));
 
 wavelengths = 380:DELTA_LAMBDA:780;
 
