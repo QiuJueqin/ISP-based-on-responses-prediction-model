@@ -18,7 +18,7 @@ if ndims(img) == 3
 end
 
 % assume the brightest pixels in the image correspond to the white object
-brightest_pixel_indices = img(:, 2) >= prctile(img(:, 2), 99);
+brightest_pixel_indices = img(:, 2) >= prctile(img(:, 2), 99.9);
 max_intensity = mean(img(brightest_pixel_indices, 2));
 
 gains = iso2gains(iso, iso_profile);

@@ -53,7 +53,7 @@ for i = 1:numel(img_names)
     awb_gains = illuminant_rgb(2) ./ illuminant_rgb;
     
     % awb gains with chromatic adaptation transformation
-    [post_gains, cct] = getpostgains(awb_gains, cc_profile, 1, LA);
+    [post_gains, cct] = catgain(awb_gains, cc_profile, 1, LA);
     awb_gains_cat = awb_gains .* post_gains;
     
     % image without chromatic adaptation transformation

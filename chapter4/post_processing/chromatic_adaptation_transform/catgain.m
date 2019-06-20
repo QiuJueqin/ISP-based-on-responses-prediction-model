@@ -1,5 +1,5 @@
-function [post_gains, cct] = getpostgains(gains, cc_profile, F, LA)
-% GETPOSTGAINS calculates a set of re-adjustment coefficients (post gains)
+function [post_gains, cct] = catgain(gains, cc_profile, F, LA)
+% CATGAINS calculates a set of re-adjustment coefficients (post gains)
 % based on CAT02 chromatic adaptation transformation model. The obtained
 % coefficients should only be applied to a white-balanced image instead of
 % a raw one, or be cooperated with awb gains, i.e.,
@@ -31,11 +31,8 @@ if isempty(canonical_illuminant_idx)
 end
 canonical_illuminant_gains = cc_profile.gains(canonical_illuminant_idx, :);
 rgb_illuminant = canonical_illuminant_gains ./ gains; % camera rgb of illuminant
-rgb_illuminant = rgb_illuminant / rgb_illuminant(2);
 
 xyz_illuminant = rgb_illuminant * rgb2xyz;
-xyz_illuminant = xyz_illuminant / xyz_illuminant(2); % normalized such that Y = 1
-
 xy_illuminant = xyz_illuminant([1, 2]) / sum(xyz_illuminant);
 cct = xy2cct(xy_illuminant);
 
@@ -43,10 +40,10 @@ cct = xy2cct(xy_illuminant);
 xyz_illuminant_adapted = cat02(xyz_illuminant, xyz_illuminant, whitepoint('d65'), LA, F);
 
 rgb_illuminant_adapted = xyz_illuminant_adapted * rgb2xyz^(-1);
-rgb_illuminant_adapted = rgb_illuminant_adapted / rgb_illuminant_adapted(2);
 
 rgb_canonical_illuminant = whitepoint('d65') * rgb2xyz^(-1);
 
 post_gains = rgb_illuminant_adapted ./ rgb_canonical_illuminant;
+post_gains = post_gains / post_gains(2);
 
 end
