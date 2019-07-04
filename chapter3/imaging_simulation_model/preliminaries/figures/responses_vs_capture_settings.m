@@ -45,11 +45,11 @@ xticklabels = cellfun(@(x, y)strcat(x, ', ', y), iso_labels, exp_labels, 'Unifor
 % add a asterisk marker to those responses that have been normalized
 for i = 1:numel(brightness_factor)
     if brightness_factor(i) ~= 1
-        xticklabels{i} = ['$^{\ast}$', xticklabels{i}];
+        xticklabels{i} = ['${\ast}$', xticklabels{i}];
     end
 end
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 18,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 20,...
          'TickLabelInterpreter', 'latex',...
          'XTick', x, 'XTickLabel', xticklabels,...
          'XTickLabelRotation', 90,...
@@ -63,7 +63,7 @@ ylabel('Raw Response (in 14-bit)', 'fontsize', 26, 'fontname', 'times new roman'
 % plot camera responses (from dark frames) w.r.t. different capture 
 % settings for SONY ILCE7
 
-clearvars -except RED GREEN BLUE data_path
+clearvars -except RED GREEN BLUE config
 
 % load data
 load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_capture_settings.mat'));
@@ -100,11 +100,11 @@ xticklabels = cellfun(@(x, y)strcat(x, ', ', y), iso_labels, exp_labels, 'Unifor
 % add a asterisk marker to those responses that have been normalized
 for i = 1:numel(brightness_factor)
     if brightness_factor(i) ~= 1
-        xticklabels{i} = ['$^{\ast}$', xticklabels{i}];
+        xticklabels{i} = ['${\ast}$', xticklabels{i}];
     end
 end
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 18,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 20,...
          'TickLabelInterpreter', 'latex',...
          'XTick', x, 'XTickLabel', xticklabels,...
          'XTickLabelRotation', 90,...

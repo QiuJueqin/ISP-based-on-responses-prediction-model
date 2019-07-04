@@ -12,7 +12,7 @@ config = parse_data_config;
 load(fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_iso_EXP60.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 17]);
-hax = axes(hfig, 'position', [.125 .2 .8 .75]);
+hax = axes(hfig, 'position', [.125 .2 .8 .74]);
 
 hline1 = semilogx(iso_levels, mean_values(:, 1), 'color', RED, 'linestyle', ':', 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);
@@ -48,7 +48,7 @@ hax.YAxis.MinorTickValues = 0.5:1:5.5;
 
 xticklabels = num2cell(iso_levels);
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 24,...
          'TickLabelInterpreter', 'latex',...
          'XTick', iso_levels, 'XTickLabel', xticklabels,...
          'XTickLabelRotation', 45,...
@@ -61,13 +61,13 @@ ylabel('Raw Response (in 14-bit)', 'fontsize', 26, 'fontname', 'times new roman'
 
 %% plot camera responses (from dark frames) w.r.t. ISO levels for SONY ILCE7
 
-clearvars -except RED GREEN BLUE data_path
+clearvars -except RED GREEN BLUE config
 
 % load data captured under ISO100
 load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_iso_EXP60.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 17]);
-hax = axes(hfig, 'position', [.125 .2 .8 .75]);
+hax = axes(hfig, 'position', [.125 .2 .8 .74]);
 
 hline1 = semilogx(iso_levels, mean_values(:, 1), 'color', RED, 'linestyle', ':', 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);
@@ -103,7 +103,7 @@ hax.YAxis.MinorTickValues = 0.1:0.2:1.3;
 
 xticklabels = num2cell(iso_levels);
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 24,...
          'TickLabelInterpreter', 'latex',...
          'XTick', iso_levels, 'XTickLabel', xticklabels,...
          'XTickLabelRotation', 45,...

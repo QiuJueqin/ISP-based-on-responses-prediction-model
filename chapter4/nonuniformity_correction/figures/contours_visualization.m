@@ -41,11 +41,11 @@ for i = 3:numel(contents)
                                'showtext', 'on', 'labelspacing', 128);
         hcont.LineColor = LINECOLOR;
         hcont.LineWidth = 1;
-        clabel(ct, hcont, 'fontname', 'times new roman', 'fontsize', 18);
+        clabel(ct, hcont, 'fontname', 'times new roman', 'fontsize', 20);
         caxis([0, 1]);
         colormap(CMAP);
         colorbar('ticks', 0:0.2:1,...
-                 'fontname', 'times new roman', 'fontsize', 18,...
+                 'fontname', 'times new roman', 'fontsize', 26,...
                  'linewidth', 1.5);
         axis off;
         
@@ -55,11 +55,11 @@ for i = 3:numel(contents)
                                'showtext', 'on', 'labelspacing', 80);
         hcont.LineColor = LINECOLOR;
         hcont.LineWidth = 1;
-        clabel(ct, hcont, 'fontname', 'times new roman', 'fontsize', 15);
+        clabel(ct, hcont, 'fontname', 'times new roman', 'fontsize', 18);
         caxis([0.95, 1]);
         colormap(CMAP);
         colorbar('ticks', 0.95:0.01:1,...
-                 'fontname', 'times new roman', 'fontsize', 18,...
+                 'fontname', 'times new roman', 'fontsize', 26,...
                  'linewidth', 1.5);
         axis off;
     end

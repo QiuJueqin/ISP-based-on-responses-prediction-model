@@ -12,7 +12,7 @@ config = parse_data_config;
 load(fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO100.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
-hax = axes(hfig, 'position', [.125 .15 .8 .8]);
+hax = axes(hfig, 'position', [.125 .15 .8 .78]);
 
 hline1 = semilogx(exposures, mean_values(:, 1), 'color', RED, 'linestyle', ':', 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);
@@ -48,25 +48,26 @@ hax.YAxis.MinorTickValues = 0.5:1:5.5;
 
 xticklabels = cellfun(@(x)sprintf('$\\frac{1}{%d}$', x), num2cell(1./exposures), 'UniformOutput', false);
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 24,...
          'TickLabelInterpreter', 'latex',...
          'XTick', exposures, 'XTickLabel', xticklabels,...
          'ytick', 0:6, 'ticklength', [0, 0],...
          'xminorgrid', 'off', 'yminorgrid', 'on');
-     
+hax.XAxis.FontSize = 28;
+
 xlabel('Exposure Time (s)', 'fontsize', 26, 'fontname', 'times new roman');
 ylabel('Raw Response (in 14-bit)', 'fontsize', 26, 'fontname', 'times new roman');
      
 
 %% plot camera responses (from dark frames) w.r.t. exposure times for SONY ILCE7
 
-clearvars -except RED GREEN BLUE data_path
+clearvars -except RED GREEN BLUE config
 
 % load data captured under ISO100
 load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_exposures_ISO100.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
-hax = axes(hfig, 'position', [.125 .15 .8 .8]);
+hax = axes(hfig, 'position', [.125 .15 .8 .78]);
 
 hline1 = semilogx(exposures, mean_values(:, 1), 'color', RED, 'linestyle', ':', 'marker', 'o',...
                   'markerfacecolor', RED, 'linewidth', 2.5, 'markersize', 10);
@@ -102,12 +103,13 @@ hax.YAxis.MinorTickValues = 0.1:0.2:1.1;
 
 xticklabels = cellfun(@(x)sprintf('$\\frac{1}{%d}$', x), num2cell(1./exposures), 'UniformOutput', false);
 
-set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
+set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 24,...
          'TickLabelInterpreter', 'latex',...
          'XTick', exposures, 'XTickLabel', xticklabels,...
          'ytick', 0:0.2:1.2, 'ticklength', [0, 0],...
          'xminorgrid', 'off', 'yminorgrid', 'on');
-     
+hax.XAxis.FontSize = 28;
+
 xlabel('Exposure Time (s)', 'fontsize', 26, 'fontname', 'times new roman');
 ylabel('Raw Response (in 12-bit)', 'fontsize', 26, 'fontname', 'times new roman');
      
