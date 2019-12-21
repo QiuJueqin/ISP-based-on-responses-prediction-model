@@ -17,10 +17,8 @@ unknown_illuminant_spds = [xlsread('cie.15.2004.tables.xls', 1, 'C27:C87')';... 
                            xlsread('cie.15.2004.tables.xls', 6, 'L10:L70')'];   % TL84
 
 % load parameters of imaging simulation model
-config = parse_data_config;
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', 'responses');
 
 % load spectral reflectane data of Classic ColorChecker
 wavelengths = 400:10:700;
@@ -45,9 +43,9 @@ for i = 1:numel(unknown_illuminant_names)
     spectra_train = spectral_reflectance_train .* unknown_illuminant_spd;
     
     
-    [~, saturation] = responses_predict(spectra_train, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_train_ = responses_predict(spectra_train/saturation, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_train_ = raw2linear(camera_rgb_train_, params, GAINS); % back to linear responses
+    [~, saturation] = responses_predict(spectra_train, WAVELENGTHS, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
+    camera_rgb_train_ = responses_predict(spectra_train/saturation, WAVELENGTHS, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
+    camera_rgb_train_ = raw2linear(camera_rgb_train_, camera_config.responses.params, GAINS); % back to linear responses
     
     neutral_idx = [61, 62, 63, 64, 65];
     gains.(iname) = [camera_rgb_train_(neutral_idx, 1) \ camera_rgb_train_(neutral_idx, 2),...
@@ -67,9 +65,9 @@ for i = 1:numel(unknown_illuminant_names)
                                                       
 	% validation
     spectra_val = spectral_reflectance_val .* unknown_illuminant_spd;
-    [~, saturation] = responses_predict(spectra_val, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_val_ = responses_predict(spectra_val/saturation, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_val_ = raw2linear(camera_rgb_val_, params, GAINS); % back to linear responses
+    [~, saturation] = responses_predict(spectra_val, WAVELENGTHS, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
+    camera_rgb_val_ = responses_predict(spectra_val/saturation, WAVELENGTHS, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
+    camera_rgb_val_ = raw2linear(camera_rgb_val_, camera_config.responses.params, GAINS); % back to linear responses
 	camera_rgb_val.(iname) = camera_rgb_val_;
     camera_rgb_wb_val.(iname) = camera_rgb_val.(iname) .* gains.(iname);
     
@@ -97,7 +95,7 @@ for i = 1:numel(unknown_illuminant_names)
              mean(errs_val.(iname).ciede00(neutral_idx)));
 end
 
-save_dir = fullfile(config.data_path,...
+save_dir = fullfile(data_config.path,...
                     'color_correction\NIKON_D3x\color_correction_calibration_data.mat');
 save(save_dir, 'canonical_xyz_train', 'canonical_xyz_val',...
                'camera_rgb_train', 'camera_rgb_val',...

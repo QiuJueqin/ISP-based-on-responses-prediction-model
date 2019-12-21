@@ -10,5 +10,5 @@ function raw_noise_corrected = noise_corr(raw, profile)
 assert(isequal(size(raw), size(profile.mu_dark_estimate)));
 assert(isequal(size(raw), size(profile.K_estimate)));
 
-% see Eq.() in Chapter 3
+% c.f. Eq.(3.58).
 raw_noise_corrected = (raw - profile.mu_dark_estimate) ./ profile.K_estimate;

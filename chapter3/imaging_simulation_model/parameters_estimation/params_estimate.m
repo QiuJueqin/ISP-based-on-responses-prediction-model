@@ -1,7 +1,7 @@
 function [p, loss, responses_pred] = params_estimate(spectra, responses, g, T, delta_lambda, ccprofile,...
                                                      reg_factor, smooth_threshold)
 % PARAMS_ESTIMATE performs parameters estimation for the image formation
-% model as introduced in Section x.x, Chapter 3 in the thesis.
+% model as introduced in Section 3.3 in the thesis.
 % This is the core module for the imaging simulation model.
 %
 % INPUTS:
@@ -21,7 +21,8 @@ function [p, loss, responses_pred] = params_estimate(spectra, responses, g, T, d
 % delta_lambda:     wavelength interval for 'spectra' in nm. If not given,
 %                   it will be calculated as delta_lambda = 400/(N-1).
 % ccprofile:        a struct containing necessary parameters to perform
-%                   chromatic characterization.
+%                   colorimetric characterization. (see 
+%                   parameters_estimation_NIKON_D3x.m for the demo)
 % reg_factor:       a hyperparameter to re-adjust the weight for the
 %                   regularization item based on the L-curve method.
 %                   A smaller value will produce smaller residual error but
@@ -33,7 +34,7 @@ function [p, loss, responses_pred] = params_estimate(spectra, responses, g, T, d
 %                   lower prediction accuray. (default: 5)
 %
 % OUTPUTS:
-% p:                estimated parameters.
+% p:                a struct containing all estimated parameters.
 % loss:             CIEDE00 color difference between predicted and
 %                   ground-truth responses.
 % responses_pred:   predicted responses using estimated parameters.

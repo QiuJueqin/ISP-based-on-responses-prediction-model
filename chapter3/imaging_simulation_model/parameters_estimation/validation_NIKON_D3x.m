@@ -3,12 +3,8 @@ clear; close all; clc;
 BIT = 14;
 DELTA_LAMBDA = 5;
 
-config = parse_data_config;
-
-% load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-params = load(params_dir);
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', 'responses');
 
 %% validation
 
@@ -31,7 +27,7 @@ val_data_dirs_ = {{'ISO100_EXP10_D65_Classic.mat',...
                     
 for k = 1:3
     val_data_dirs = val_data_dirs_{k};
-    val_data_dirs = fullfile(config.data_path,...
+    val_data_dirs = fullfile(data_config.path,...
                              'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x',...
                              val_data_dirs);
 
@@ -49,7 +45,7 @@ for k = 1:3
         T_val = [T_val; res.result.T];
     end
     
-    % chromatic characterization
+    % colorimetric characterization
     responses_val = responses_val / (2^BIT-1);
     xyz_val = spectra2colors(spectra_val, 380:5:780);
     xyz_val = max(responses_val(:)) * xyz_val / max(xyz_val(:));
@@ -71,13 +67,13 @@ for k = 1:3
     responses.(val_set_names{k}) = responses_val;
     
     % responses prediction with optimal parameters
-    responses_val_pred = responses_predict(params.params, spectra_val, g_val, T_val, DELTA_LAMBDA);
+    responses_val_pred = responses_predict(camera_config.responses.params, spectra_val, g_val, T_val, DELTA_LAMBDA);
     
-    kappa0 = params.params.kappa0;
-    cam_spectra0 = params.params.cam_spectra0;
-    alpha0 = params.params.alpha0;
-    beta0 = params.params.beta0;
-    gamma0 = params.params.gamma0;
+    kappa0 = camera_config.responses.params.kappa0;
+    cam_spectra0 = camera_config.responses.params.cam_spectra0;
+    alpha0 = camera_config.responses.params.alpha0;
+    beta0 = camera_config.responses.params.beta0;
+    gamma0 = camera_config.responses.params.gamma0;
     
     % responses prediction with camera spectral sensitivity functions only
     responses_val_pred_lin = g_val .* (kappa0 * DELTA_LAMBDA * diag(T_val) * spectra_val * cam_spectra0);
@@ -142,7 +138,7 @@ for k = 1:3
                       responses_pred_nonl loss_nonl
 end
 
-save_dir = fullfile(config.data_path,...
+save_dir = fullfile(data_config.path,...
                     'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation.mat');
 save(save_dir, 'responses',...
                'responses_pred', 'loss',...

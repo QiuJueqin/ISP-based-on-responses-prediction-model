@@ -1,7 +1,7 @@
 function rgb = ocp2rgb(xy_orth, ocp_params, varargin)
 % OCP2RGB converts coordinates on orthogonal chromatic plane into camera
-% RGB color space, under the assumption that G = 1, as per Eq.() in Chapter
-% 4.
+% RGB color space, under the assumption that G = 1, as per Eqs.(4.19) 
+% and (4.20).
 
 args = parseInput(varargin{:});
 if args.reverse_y

@@ -5,11 +5,11 @@ clear; close all; clc;
 HEIGHT = 1560;
 WIDTH = 2104;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 %% luminance shading
 
-load(fullfile(config.data_path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
+load(fullfile(data_config.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
 coefs = nonuniformity_profile.params(5).coefs;
 
 knots = [0, .15, .3, .5, .7, .85, 1];

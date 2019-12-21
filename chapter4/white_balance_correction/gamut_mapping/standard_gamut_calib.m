@@ -1,8 +1,8 @@
-function vertices = standard_gamut_calib(camera_params, gains, spectral_reflectances_database, std_illuminant_spd)
+function vertices = standard_gamut_calib(camera_params, gains, spectral_reflectances_dataset, std_illuminant_spd)
 % INPUTS:
 % camera_params:                    parameters of imaging simulation model.
 % gains:                            1x3 system gains (g0).
-% spectral_reflectances_database:   N*M spectral reflectance data where N
+% spectral_reflectances_dataset:   N*M spectral reflectance data where N
 %                                   is the number of samples an M is the
 %                                   number of wavelengths. (default = our
 %                                   reflectance dataset containing 9270
@@ -22,17 +22,17 @@ if nargin <= 3
     std_illuminant_spd = xlsread('cie.15.2004.tables.xls',1,'C23:C103')';
 end
 if nargin <= 2
-    spectral_reflectances_database = xlsread('spectral_reflectances_database.xlsx', 1, 'D3:CF9272');
+    spectral_reflectances_dataset = xlsread('spectral_reflectances_dataset.xlsx', 1, 'D3:CF9272');
 end
 
-assert(size(spectral_reflectances_database, 2) == numel(WAVELENGTHS));
+assert(size(spectral_reflectances_dataset, 2) == numel(WAVELENGTHS));
 assert(isrow(std_illuminant_spd) && numel(std_illuminant_spd) == numel(WAVELENGTHS));
 
 % use cie y values as energies and remove those samples with lowest energies
-xyz = spectra2colors(spectral_reflectances_database, 380:5:780, 'spd', 'd65');
-spectral_reflectances_database(xyz(:, 2) < MIN_ENERGY_THRESHOLD, :) = [];
+xyz = spectra2colors(spectral_reflectances_dataset, 380:5:780, 'spd', 'd65');
+spectral_reflectances_dataset(xyz(:, 2) < MIN_ENERGY_THRESHOLD, :) = [];
 
-spectra = std_illuminant_spd .* spectral_reflectances_database;
+spectra = std_illuminant_spd .* spectral_reflectances_dataset;
 
 [~, saturation] = responses_predict(spectra, WAVELENGTHS, camera_params, gains, T, DELTA_LAMBDA);
 responses = responses_predict(spectra/saturation, WAVELENGTHS, camera_params, gains, T, DELTA_LAMBDA);

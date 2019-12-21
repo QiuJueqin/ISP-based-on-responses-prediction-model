@@ -8,14 +8,14 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % load spectral radiance
-csv_dir = fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\D65_DSG.csv');
+csv_dir = fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\D65_DSG.csv');
 spd_d65 = mean(xlsread(csv_dir, 1, 'AK93:PU94'), 1);
-csv_dir = fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\A_DSG.csv');
+csv_dir = fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\A_DSG.csv');
 spd_A = mean(xlsread(csv_dir, 1, 'AK93:PU94'), 1);
-csv_dir = fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\LED_DSG.csv');
+csv_dir = fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\LED_DSG.csv');
 spd_d65_led = mean(xlsread(csv_dir, 1, 'AK93:PU94'), 1);
 
 % load spectral reflectance

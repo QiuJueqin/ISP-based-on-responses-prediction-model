@@ -8,9 +8,9 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-load(fullfile(config.data_path, 'noise_calibration\NIKON_D3x\sigmaN_estimates.mat'));
+load(fullfile(data_config.path, 'noise_calibration\NIKON_D3x\sigmaN_estimates.mat'));
 
 cmap = flipud(brewermap(128, 'RdBu'));
 
@@ -64,7 +64,7 @@ set(gca, 'fontname', 'Times New Roman', 'fontsize', 20);
 %% show noise map (sigma_N^2) for SONY ILCE7
 clearvars -except data_path cmap
 
-load(fullfile(config.data_path, 'noise_calibration\ILCE7\sigmaN_estimates.mat'));
+load(fullfile(data_config.path, 'noise_calibration\ILCE7\sigmaN_estimates.mat'));
 
 hfig = figure('color', 'w', 'unit', 'centimeters', 'position', [5, 1, 14, 26]);
 

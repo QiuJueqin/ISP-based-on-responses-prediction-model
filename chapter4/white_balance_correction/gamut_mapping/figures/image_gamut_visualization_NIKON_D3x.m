@@ -14,20 +14,11 @@ NEUTRAL_REGION0 = [-0.3,  0.05;...
                    -0.3, -0.05;...
                    -0.3,  0.05];
                
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x',...
+                                    {'ocp', 'standard_gamut'});
 
-% load ocp parameters
-ocp_params_dir = fullfile(config.data_path,...
-                          'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-load(ocp_params_dir);
-
-% load standard gamut
-std_gamut_dir = fullfile(config.data_path,...
-                         'white_balance_correction\gamut_mapping\NIKON_D3x\std_gamut.mat');
-load(std_gamut_dir);
-
-
-img_dir = fullfile(config.data_path,...
+img_dir = fullfile(data_config.path,...
                    'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\DSC_2790.png');
 mask_dir = strrep(img_dir, '.png', '_mask.txt');
 
@@ -38,12 +29,12 @@ rgb = img2rgb(img, mask);
 
 rb = rgb(:, [1, 3]) ./ rgb(:, 2);
 
-[candidate_neutral_region, gamut_of_maps, vertices_maps] = gmap(rgb, ocp_params, std_gamut, STD_ILLUMINANT_RGB);
+[candidate_neutral_region, gamut_of_maps, vertices_maps] = gmap(rgb, camera_config.ocp, camera_config.standard_gamut, STD_ILLUMINANT_RGB);
 
 neutral_region = poly2_intersect(NEUTRAL_REGION0, candidate_neutral_region);
 
 % plot gamut of image (2d)
-gamut_visualize(rb, std_gamut, true, {'$\frac{D_r}{D_g}$', '$\frac{D_b}{D_g}$'});
+gamut_visualize(rb, camera_config.standard_gamut, true, {'$\frac{D_r}{D_g}$', '$\frac{D_b}{D_g}$'});
 
 % plot gamut of image (3d)
 gamut_visualize(rgb);

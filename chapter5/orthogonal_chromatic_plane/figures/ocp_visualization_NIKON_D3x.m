@@ -8,13 +8,8 @@ NB_TEMPERATURES = 50;
 RED = [255, 84, 84]/255;
 BLUE = [0, 128, 220]/255;
 
-config = parse_data_config;
-
-% load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-params = load(params_dir);
-
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'ocp'});
 
 %% black bodies
 
@@ -30,7 +25,9 @@ for i = 1:NB_TEMPERATURES
 end
 
 % responses prediction for black bodies from 3200K to 12000K
-responses_bb = responses_predict(spectra_bb/2, WAVELENGTHS, params.params, GAINS, T, DELTA_LAMBDA);
+responses_bb = responses_predict(spectra_bb/2, WAVELENGTHS,...
+                                 camera_config.responses.params,...
+                                 GAINS, T, DELTA_LAMBDA);
 
 
 %% iso-temperature illuminants
@@ -41,13 +38,11 @@ XYZ_ = spectra2colors(spectra_duv, WAVELENGTHS);
 spectra_duv = spectra_duv ./ XYZ_(:, 2);
 
 % responses prediction for iso-temperature illuminants
-responses_duv = responses_predict(spectra_duv/2, WAVELENGTHS, params.params, GAINS, T, DELTA_LAMBDA);
+responses_duv = responses_predict(spectra_duv/2, WAVELENGTHS,...
+                                  camera_config.responses.params,...
+                                  GAINS, T, DELTA_LAMBDA);
 
 %% visualization
-
-ocp_params_dir = fullfile(config.data_path,...
-                          'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-load(ocp_params_dir);
 
 % logarithmic plane
 ocp_params_log.w = [1/3; 1/3; 1/3];
@@ -81,7 +76,7 @@ text([xy_log_bb(1,1)-0.04; xy_log_bb(end,1)-0.08],...
      'horizontalalignment', 'left', 'interpreter', 'latex');
 
 % rotated plane
-ocp_params_rot = ocp_params;
+ocp_params_rot = camera_config.ocp;
 ocp_params_rot.sigma = 0;
 
 xtick = -0.6:0.3:1.2;
@@ -130,9 +125,9 @@ legend({'Black Body', 'LED D65 Simulator'},...
        'fontname', 'times new roman', 'fontsize', 22, 'box', 'off');
    
 % after shearing
-xy_orth_bb = rgb2ocp(responses_bb, ocp_params);
-xy_orth_duv = rgb2ocp(responses_duv, ocp_params);
-ocp_diagram_orth = ocp_colorize(ocp_params,...
+xy_orth_bb = rgb2ocp(responses_bb, camera_config.ocp);
+xy_orth_duv = rgb2ocp(responses_duv, camera_config.ocp);
+ocp_diagram_orth = ocp_colorize(camera_config.ocp,...
                                 [xtick(1), xtick(end)],...
                                 [ytick(1), ytick(end)],...
                                 512);

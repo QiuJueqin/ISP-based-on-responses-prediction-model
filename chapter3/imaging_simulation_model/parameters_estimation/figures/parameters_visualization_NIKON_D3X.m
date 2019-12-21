@@ -7,10 +7,8 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-config = parse_data_config;
-
-% load data
-load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', 'responses');
 
 wavelengths = 380:DELTA_LAMBDA:780;
 
@@ -18,11 +16,11 @@ wavelengths = 380:DELTA_LAMBDA:780;
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
 hold on; grid on; box on;
-plot(wavelengths, params.cam_spectra0(:, 1),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 1),...
      'color', RED, 'linewidth', 3, 'linestyle', ':');
-plot(wavelengths, params.cam_spectra0(:, 2),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 2),...
      'color', GREEN, 'linewidth', 3, 'linestyle', ':');
-plot(wavelengths, params.cam_spectra0(:, 3),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 3),...
      'color', BLUE, 'linewidth', 3, 'linestyle', ':');
 
 xlim([380, 780]);
@@ -47,17 +45,17 @@ set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 16]);
 hold on; grid on; box on;
-plot(wavelengths, params.cam_spectra0(:, 1),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 1),...
      'color', RED, 'linewidth', 3, 'linestyle', ':');
-plot(wavelengths, params.cam_spectra(:, 1),...
+plot(wavelengths, camera_config.responses.params.cam_spectra(:, 1),...
      'color', RED, 'linewidth', 3, 'linestyle', '-');
-plot(wavelengths, params.cam_spectra0(:, 2),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 2),...
      'color', GREEN, 'linewidth', 3, 'linestyle', ':');
-plot(wavelengths, params.cam_spectra(:, 2),...
+plot(wavelengths, camera_config.responses.params.cam_spectra(:, 2),...
      'color', GREEN, 'linewidth', 3, 'linestyle', '-');
-plot(wavelengths, params.cam_spectra0(:, 3),...
+plot(wavelengths, camera_config.responses.params.cam_spectra0(:, 3),...
      'color', BLUE, 'linewidth', 3, 'linestyle', ':');
-plot(wavelengths, params.cam_spectra(:, 3),...
+plot(wavelengths, camera_config.responses.params.cam_spectra(:, 3),...
      'color', BLUE, 'linewidth', 3, 'linestyle', '-');
 
 % phantom lines for adding a legend 
@@ -101,13 +99,13 @@ T = (1/8) * ones(M, 1); % 1/8s
 linestyples = {'-', ':', '--'};
 figure; hold on;
 for i = 1:numel(noise_profiles)
-    load(fullfile(config.data_path, noise_profiles{i}));
+    load(fullfile(data_config.path, noise_profiles{i}));
     g = noise_profile.g0_estimate;
-    kappa0 = params.kappa0;
-    cam_spectra0 = params.cam_spectra0;
-    alpha0 = params.alpha0;
-    beta0 = params.beta0;
-    gamma0 = params.gamma0;
+    kappa0 = camera_config.responses.params.kappa0;
+    cam_spectra0 = camera_config.responses.params.cam_spectra0;
+    alpha0 = camera_config.responses.params.alpha0;
+    beta0 = camera_config.responses.params.beta0;
+    gamma0 = camera_config.responses.params.gamma0;
     responses = g .* real((kappa0 * DELTA_LAMBDA * diag(T) * spectra * cam_spectra0 + alpha0).^gamma0) + beta0;
     responses = max(min(responses, 1), 0);
     plot(radiances, responses(:, 1), 'color', RED, 'linestyle', linestyples{i});

@@ -2,23 +2,12 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
-
-% read camera parameters
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
-
-% read iso profile
-iso_profile = load(fullfile(config.data_path,...
-                            'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
-                        
-% read color correction profile
-cc_profile = load(fullfile(config.data_path,...
-                           'color_correction\NIKON_D3x\cc_profile.mat'));
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x',...
+                                    {'responses', 'gains', 'color'});
 
 % read test images
-dataset_dir = fullfile(config.data_path,...
+dataset_dir = fullfile(data_config.path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
 dataset = dir(dataset_dir);
 
@@ -35,14 +24,14 @@ for i = 1:numel(dataset)
     raw_dir = strrep(raw_dir, '.png', '.NEF');
     info = getrawinfo(raw_dir);
     iso = info.DigitalCamera.ISOSpeedRatings;
-    gains = iso2gains(iso, iso_profile);
+    gains = iso2gains(iso, camera_config.gains);
     
-    img = raw2linear(img, params, gains);
+    img = raw2linear(img, camera_config.responses.params, gains);
     
     rgb_dir = strrep(img_dir, '.png', '_rgb.txt'); % ground-truth
     rgb = dlmread(rgb_dir);
     rgb = max(min(rgb, 1), 0);
-    rgb = raw2linear(rgb, params, gains);
+    rgb = raw2linear(rgb, camera_config.responses.params, gains);
     
     illuminant_rgb = get_illuminant_rgb(rgb);
     awb_gains = illuminant_rgb(2) ./ illuminant_rgb;
@@ -50,10 +39,10 @@ for i = 1:numel(dataset)
     img_wb = img .* reshape(awb_gains, 1, 1, 3);
     img_wb = max(min(img_wb, 1), 0);
     
-    img_cc = cc(img_wb, awb_gains, cc_profile);
+    img_cc = cc(img_wb, awb_gains, camera_config.color);
  	img_cc = lin2rgb(img_cc);
     
-    img_save_dir = fullfile(config.data_path,...
+    img_save_dir = fullfile(data_config.path,...
                             'color_correction\NIKON_D3x\colorchecker_dataset_results',...
                             sprintf('%s.png', img_name));
     imwrite(img_cc, img_save_dir);

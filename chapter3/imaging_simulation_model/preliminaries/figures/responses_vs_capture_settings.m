@@ -8,10 +8,10 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % load data
-load(fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_capture_settings.mat'));
+load(fullfile(data_config.path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_capture_settings.mat'));
 
 % normalize raw responses by the (normalized) product of exposure time and ISO level
 brightness_factor = exposures .* iso_levels;
@@ -63,10 +63,10 @@ ylabel('Raw Response (in 14-bit)', 'fontsize', 26, 'fontname', 'times new roman'
 % plot camera responses (from dark frames) w.r.t. different capture 
 % settings for SONY ILCE7
 
-clearvars -except RED GREEN BLUE config
+clearvars -except RED GREEN BLUE data_config
 
 % load data
-load(fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_capture_settings.mat'));
+load(fullfile(data_config.path, 'response_prediction\preliminaries\ILCE7\responses_vs_capture_settings.mat'));
 
 % normalize raw responses by the (normalized) product of exposure time and ISO level
 brightness_factor = exposures .* iso_levels;

@@ -7,10 +7,10 @@ DELTA_LAMBDA = 5;
 WAVELENGTHS = 400:DELTA_LAMBDA:700;
 SATURATION_THRESHOLD = 0.98;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
+params_dir = fullfile(data_config.path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 
@@ -23,15 +23,15 @@ spectral_reflectance = (spectral_reflectance(1:2:end, :) + spectral_reflectance(
 lin_srgb_ground_truth = spectra2colors(spectral_reflectance, WAVELENGTHS, 'spd', 'd65', 'output', 'srgb');
 
 % read iso profile
-iso_profile = load(fullfile(config.data_path,...
+iso_profile = load(fullfile(data_config.path,...
                             'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
                         
 % read color correction profile
-cc_profile = load(fullfile(config.data_path,...
+cc_profile = load(fullfile(data_config.path,...
                            'color_correction\NIKON_D3x\cc_profile.mat'));
 
 % read test images
-dataset_dir = fullfile(config.data_path,...
+dataset_dir = fullfile(data_config.path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
 dataset = dir(dataset_dir);
 
@@ -93,7 +93,7 @@ for i = 1:numel(dataset)
     
 end
 
-save_dir = fullfile(config.data_path, 'color_correction\NIKON_D3x\colorchecker_dataset_results\cc_accuracies.mat');
+save_dir = fullfile(data_config.path, 'color_correction\NIKON_D3x\colorchecker_dataset_results\cc_accuracies.mat');
 save(save_dir, 'errors', 'errors_scaled');
 
 img_names = fieldnames(errors_scaled);

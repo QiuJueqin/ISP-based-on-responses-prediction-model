@@ -11,7 +11,7 @@ clear; close all; clc;
 BIT = 14;
 DELTA_LAMBDA = 5;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % read and validate training data
 train_data_dirs = {'ISO100_EXP8_D65_DSG.mat',...
@@ -20,7 +20,7 @@ train_data_dirs = {'ISO100_EXP8_D65_DSG.mat',...
                    'ISO100_EXP8_LED_DSG.mat',...
                    'ISO200_EXP15_LED_DSG.mat',...
                    'ISO400_EXP30_LED_DSG.mat'};
-train_data_dirs = fullfile(config.data_path,...
+train_data_dirs = fullfile(data_config.path,...
                            'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x',...
                            train_data_dirs);
 
@@ -60,7 +60,7 @@ ccprofile.scale = scale;
 
 [params, loss, responses_pred] = params_estimate_rbfn(spectra, responses, g, T, DELTA_LAMBDA, ccprofile);
               
-save_dir = fullfile(config.data_path,...
+save_dir = fullfile(data_config.path,...
                     'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters_rbfn.mat');
 save(save_dir, 'params', 'loss', 'responses_pred');
 
@@ -87,7 +87,7 @@ val_data_dirs_ = {{'ISO100_EXP10_D65_Classic.mat',...
                     
 for k = 1:3
     val_data_dirs = val_data_dirs_{k};
-    val_data_dirs = fullfile(config.data_path,...
+    val_data_dirs = fullfile(data_config.path,...
                              'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x',...
                              val_data_dirs);
 
@@ -105,7 +105,7 @@ for k = 1:3
         T_val = [T_val; res.result.T];
     end
     
-    % chromatic characterization
+    % colorimetric characterization
     responses_val = responses_val / (2^BIT-1);
     xyz_val = spectra2colors(spectra_val, 380:5:780);
     xyz_val = max(responses_val(:)) * xyz_val / max(xyz_val(:));
@@ -162,6 +162,6 @@ for k = 1:3
                       responses responses_pred loss
 end
 
-save_dir = fullfile(config.data_path,...
+save_dir = fullfile(data_config.path,...
                     'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation_rbfn.mat');
 save(save_dir, 'responses', 'responses_pred', 'loss');

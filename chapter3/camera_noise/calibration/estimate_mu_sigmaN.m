@@ -1,6 +1,6 @@
 function [mu_estimate, sigmaN_estimate] = estimate_mu_sigmaN(raw_dirs, varargin)
 % ESTIMATE_MU_SIGMAN calculates temporal mean as well as temporal % sample
-% variance for total noise as per Eqs.(34) and (35) in Chapter 3.
+% variance for total noise as per Eqs.(3.36) and (3.37).
 %
 % raw_dirs:             a cell specifying the .NEF file names (absolute
 %                       dir), e.g., D_1(i,j), ..., D_N(i,j).

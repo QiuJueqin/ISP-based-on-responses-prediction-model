@@ -1,6 +1,5 @@
 function K_estimate = estimate_K(mu_estimate_concat, g0_estimate, mu_dark_estimate)
-% ESTIMATE_K calculate fixed pattern noise K(i,j) as per Eq.(49) in
-% Chapter 3.
+% ESTIMATE_K calculate fixed pattern noise K(i,j) as per Eq.(3.51).
 %
 % mu_estimate_concat:   concatenated mu_estimate (H*W*3*n5 tensor) returned
 %                       by estimate_g0().

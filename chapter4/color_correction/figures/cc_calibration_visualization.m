@@ -1,7 +1,7 @@
 clear; close all; clc;
 
-config = parse_data_config;
-load(fullfile(config.data_path,...
+data_config = parse_data_config;
+load(fullfile(data_config.path,...
               'color_correction\NIKON_D3x\color_correction_calibration_data.mat'));
 
 for i = 1:numel(unknown_illuminant_names)
@@ -14,11 +14,11 @@ for i = 1:numel(unknown_illuminant_names)
     rgb_wb = colors2checker(rgb_wb .^ (1/2.2), 'show', false);
     rgb_cc = colors2checker(rgb_cc, 'show', false);
     
-    rgb_dir = fullfile(config.data_path,...
+    rgb_dir = fullfile(data_config.path,...
                        sprintf('color_correction\\NIKON_D3x\\rgb_%s.png', iname));
-    rgb_wb_dir = fullfile(config.data_path,...
+    rgb_wb_dir = fullfile(data_config.path,...
                           sprintf('color_correction\\NIKON_D3x\\rgb_wb_%s.png', iname));
-	rgb_cc_dir = fullfile(config.data_path,...
+	rgb_cc_dir = fullfile(data_config.path,...
                           sprintf('color_correction\\NIKON_D3x\\rgb_cc_%s.png', iname));
     imwrite(rgb, rgb_dir);
     imwrite(rgb_wb, rgb_wb_dir);
@@ -26,7 +26,7 @@ for i = 1:numel(unknown_illuminant_names)
     
     color_diff(canonical_xyz_val, predicted_responses_val.(iname));
     
-    color_diff_dir = fullfile(config.data_path,...
+    color_diff_dir = fullfile(data_config.path,...
                               sprintf('color_correction\\NIKON_D3x\\color_diff_%s.png', iname));
     export_fig(color_diff_dir, '-r150');
     

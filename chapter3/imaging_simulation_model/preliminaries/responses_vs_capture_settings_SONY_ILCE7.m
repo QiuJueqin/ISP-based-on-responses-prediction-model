@@ -7,9 +7,9 @@ CAMERA_MODEL = 'ILCE7';
 INBIT = 12;
 SQUARE_SIZE = 50;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-folders = fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\combined_settings_1000lx\*.ARW');
+folders = fullfile(data_config.path, 'response_prediction\preliminaries\ILCE7\combined_settings_1000lx\*.ARW');
 contents = dir(folders);
 profile_dir = '';
 exposures = zeros(numel(contents), 1);
@@ -18,7 +18,7 @@ mean_values = zeros(numel(contents), 3);
 
 for i = 1:numel(contents)
     raw_dir = fullfile(contents(i).folder, contents(i).name);
-    profile_dir_tmp = findprofile(raw_dir, config.data_path);
+    profile_dir_tmp = findprofile(raw_dir, data_config.path);
     
     % load the noise calibration profile if it does not exist in the
     % workspace
@@ -47,5 +47,5 @@ for i = 1:numel(contents)
 	mean_values(i, :) = squeeze(mean(roi, [1, 2]))';
 end
 
-save_dir = fullfile(config.data_path, 'response_prediction\preliminaries\ILCE7\responses_vs_capture_settings.mat');
+save_dir = fullfile(data_config.path, 'response_prediction\preliminaries\ILCE7\responses_vs_capture_settings.mat');
 save(save_dir, 'exposures', 'iso_levels', 'mean_values');

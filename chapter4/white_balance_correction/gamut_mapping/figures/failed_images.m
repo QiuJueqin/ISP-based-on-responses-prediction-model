@@ -18,24 +18,16 @@ NEUTRAL_REGION = [-0.3,  0.05;...
                   -0.3, -0.05;...
                   -0.3,  0.05];
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x',...
+                                    {'ocp', 'standard_gamut'});
 
 names = {'DSC_2351.png', 'DSC_2428.png', 'DSC_2396.png'};
 for i = 1:3
-    img_dir = fullfile(config.data_path,...
+    img_dir = fullfile(data_config.path,...
                        'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset',...
                        names{i});
     mask_dir = strrep(img_dir, '.png', '_mask.txt');
-
-    % load ocp parameters
-    ocp_params_dir = fullfile(config.data_path,...
-                              'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-    load(ocp_params_dir);
-
-    % load standard gamut
-    std_gamut_dir = fullfile(config.data_path,...
-                             'white_balance_correction\gamut_mapping\NIKON_D3x\std_gamut.mat');
-    load(std_gamut_dir);
 
     img = 2 * double(imread(img_dir)) / (2^16 - 1);
     mask = dlmread(mask_dir);
@@ -43,7 +35,7 @@ for i = 1:3
     rgb = img2rgb(img, mask);
 
     [~, whist, whist_moved, hist_moved, whist0, ~] =...
-        npstat(rgb, ocp_params, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
+        npstat(rgb, camera_config.ocp, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
 
     % whist0
     hist_visualize(whist0);
@@ -53,11 +45,11 @@ for i = 1:3
     hist_visualize(whist, NEUTRAL_REGION);
     set(gca, 'ztick', 0:2E2:2E3);
 
-    [candidate_neutral_region, ~, ~] = gmap(rgb, ocp_params, std_gamut, STD_ILLUMINANT_RGB);
+    [candidate_neutral_region, ~, ~] = gmap(rgb, camera_config.ocp, camera_config.standard_gamut, STD_ILLUMINANT_RGB);
     neutral_region = poly2_intersect(NEUTRAL_REGION, candidate_neutral_region);
 
     [gains, whist, ~, ~, ~, ~] =...
-        npstat(rgb, ocp_params, neutral_region, XLIM, YLIM, GRID_SIZE);
+        npstat(rgb, camera_config.ocp, neutral_region, XLIM, YLIM, GRID_SIZE);
 
     % whist
     hist_visualize(whist, neutral_region);

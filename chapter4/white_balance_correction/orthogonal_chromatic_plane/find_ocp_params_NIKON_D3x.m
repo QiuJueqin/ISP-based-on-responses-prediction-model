@@ -2,21 +2,12 @@ clear; close all; clc;
 
 ISO = 100;
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains'});
 
-iso_profile_dir = fullfile(config.data_path,...
-                           'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat');
-iso_profile = load(iso_profile_dir);
+gains = iso2gains(ISO, camera_config.gains);
+ocp_params = find_ocp_params(camera_config.responses.params, gains);
 
-gains = iso2gains(ISO, iso_profile);
-
-% load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-params = load(params_dir);
-
-ocp_params = find_ocp_params(params.params, gains);
-
-save_dir = fullfile(config.data_path,...
+save_dir = fullfile(data_config.path,...
                     'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
 save(save_dir, 'ocp_params');

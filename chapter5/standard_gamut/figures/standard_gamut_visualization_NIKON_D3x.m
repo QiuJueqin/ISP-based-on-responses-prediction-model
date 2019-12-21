@@ -12,17 +12,17 @@ GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms exposure time
 RED = [255, 84, 84]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-spectral_reflectances_database = xlsread('spectral_reflectances_database.xlsx', 1, 'D3:CF9272');
+spectral_reflectances_dataset = xlsread('spectral_reflectances_dataset.xlsx', 1, 'D3:CF9272');
 % keep only 400-700nm
-spectral_reflectances_database = spectral_reflectances_database(:, 5:end-16);
-spectral_reflectances_database(any(spectral_reflectances_database < 0, 2), :) = [];
+spectral_reflectances_dataset = spectral_reflectances_dataset(:, 5:end-16);
+spectral_reflectances_dataset(any(spectral_reflectances_dataset < 0, 2), :) = [];
 
 % remove those samples with lowest energies
-xyz = spectra2colors(spectral_reflectances_database, WAVELENGTHS, 'spd', 'd65');
+xyz = spectra2colors(spectral_reflectances_dataset, WAVELENGTHS, 'spd', 'd65');
 xyz(xyz(:, 2) < MIN_ENERGY_THRESHOLD , :) = [];
-spectral_reflectances_database(xyz(:, 2) < MIN_ENERGY_THRESHOLD , :) = [];
+spectral_reflectances_dataset(xyz(:, 2) < MIN_ENERGY_THRESHOLD , :) = [];
 
 
 %% visualize spectral reflectance
@@ -31,7 +31,7 @@ lab = xyz2lab(xyz);
 saturation = sqrt(sum(lab(:, [2, 3]).^2, 2));
 
 % remove those samples with lowest saturation
-spectra = spectral_reflectances_database(saturation >= SATURATION_THRESHOLD, :);
+spectra = spectral_reflectances_dataset(saturation >= SATURATION_THRESHOLD, :);
 
 N = size(spectra, 1);
 indices = randperm(N, K);
@@ -57,13 +57,13 @@ ylabel('Spectral Reflectance', 'fontsize', 26, 'fontname', 'times new roman');
 %% visualize standard gamut
 
 % load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
+params_dir = fullfile(data_config.path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 
 std_illuminant_spd = xlsread('cie.15.2004.tables.xls',1,'C23:C83')'; % D65
 
-spectra = std_illuminant_spd .* spectral_reflectances_database;
+spectra = std_illuminant_spd .* spectral_reflectances_dataset;
 xyz = spectra2colors(spectra, WAVELENGTHS);
 colors = max(min(xyz2rgb(1.2 * xyz / max(xyz(:))), 1), 0);
 

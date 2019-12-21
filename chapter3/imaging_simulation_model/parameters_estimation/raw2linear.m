@@ -1,6 +1,5 @@
 function img_linear = raw2linear(img, params, g)
-% RAW2LINEAR converts non-linear raw image into linear one as per Eq.73 in
-% Chapter 3.
+% RAW2LINEAR converts non-linear raw image into linear one as per Eq.(3.74).
 %
 % INPUTS:
 % img:              input non-linear image.

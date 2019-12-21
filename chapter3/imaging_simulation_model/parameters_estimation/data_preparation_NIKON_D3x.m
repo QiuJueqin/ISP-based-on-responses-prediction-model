@@ -3,11 +3,11 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 %% extract camera responses from raw images
 
-contents = dir(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x'));
+contents = dir(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x'));
 for i = 3:numel(contents)
     raws_dir = fullfile(contents(i).folder, [contents(i).name, '\*.NEF']);
     if contents(i).isdir && ~contains(raws_dir, 'thumbnails')
@@ -19,7 +19,7 @@ end
 
 clearvars -except data_path;
 
-contents = dir(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\*.mat'));
+contents = dir(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\*.mat'));
 for i = 1:numel(contents)
     responses_dir = fullfile(contents(i).folder, contents(i).name);
     if contains(responses_dir, 'ISO_')

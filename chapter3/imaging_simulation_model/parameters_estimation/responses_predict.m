@@ -14,9 +14,8 @@ function [responses, saturation] = responses_predict(spectra, wavelengths, param
 % params:           a struct containing parameters for the imaging
 %                   simulation mode, including camera spectral sensitivity
 %                   functions, kappa, nonlinear coefficients (alpha, beta,
-%                   and gamma), and a crosstalk matrix. See Eq.(65) in
-%                   Chapter 3 for the details of these
-%                   parameters. 
+%                   and gamma), and a crosstalk matrix. See Eq.(3.66) for
+%                   the details of these parameters. 
 % g:                M*3 system gains vector estimated by estimate_g0()
 %                   function. If the gains are identical for all training
 %                   samples, just use g = repmat(g0, M, 1) to get M

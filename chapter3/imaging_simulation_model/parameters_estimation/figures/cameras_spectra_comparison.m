@@ -11,12 +11,12 @@ RED = [255, 84, 84]/255;
 GREEN = [0, 204, 102]/255;
 BLUE = [0, 128, 220]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % load data
-params_proposed = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
-params_pca = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters_pca.mat'));
-params_rbfn = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters_rbfn.mat'));
+params_proposed = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
+params_pca = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters_pca.mat'));
+params_rbfn = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters_rbfn.mat'));
 
 wavelengths = 380:DELTA_LAMBDA:780;
 wavelengths_small = 400:DELTA_LAMBDA:720;
@@ -68,9 +68,9 @@ set(gca, 'linewidth', 1.5, 'fontname', 'times new roman', 'fontsize', 22,...
 clearvars -except DELTA_LAMBDA RED GREEN BLUE data_path
 
 % load data
-params_proposed = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters.mat'));
-params_pca = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters_pca.mat'));
-params_rbfn = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters_rbfn.mat'));
+params_proposed = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters.mat'));
+params_pca = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters_pca.mat'));
+params_rbfn = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters_rbfn.mat'));
 
 wavelengths = 380:DELTA_LAMBDA:780;
 wavelengths_small = 400:DELTA_LAMBDA:720;

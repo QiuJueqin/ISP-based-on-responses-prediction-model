@@ -10,9 +10,9 @@ else
            'make sure the directory path contains one of these camera model names']);
 end
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-noise_profile_dir = findprofile(raw_dir, config.data_path);
+noise_profile_dir = findprofile(raw_dir, data_config.path);
 load(noise_profile_dir);
 
 matraw_params = {'inbit', inbit, 'outbit', 'same', 'save', false,...

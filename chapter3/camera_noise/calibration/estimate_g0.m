@@ -1,5 +1,5 @@
 function [g0_estimate, mu_estimate_concat] = estimate_g0(raw_dirs_mat, varargin)
-% ESTIMATE_G0 calculates system gain g0 as per Eqs.(42)-(43)in Chapter 3.
+% ESTIMATE_G0 calculates system gain g0 as per Eq.(3.44).
 %
 % raw_dirs_mat:         a cell MATRIX specifying the .NEF file names
 %                       (absolute dir), e.g., D_1(i,j), ..., D_N(i,j).

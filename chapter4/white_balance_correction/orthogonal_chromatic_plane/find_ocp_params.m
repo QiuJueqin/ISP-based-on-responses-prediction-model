@@ -1,6 +1,6 @@
 function ocp_params = find_ocp_params(camera_params, gains)
 % FIND_OCP_PARAMS finds optimal parameters for constructing orthogonal
-% chromatic plane as per Sectionxx in Chapter 4.
+% chromatic plane as per Section 4.3.1.1 and Section 5.1.1.
 
 T = 0.01; % 10ms exposure time
 DELTA_LAMBDA = 5;

@@ -2,9 +2,9 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-load(fullfile(config.data_path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
+load(fullfile(data_config.path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
 
 cmap = brewermap(64, 'OrRd');
 
@@ -24,9 +24,9 @@ set(gca, 'fontname', 'Times New Roman', 'fontsize', 26);
 
 clear; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-load(fullfile(config.data_path, 'noise_calibration\ILCE7\EXP8_ISO100_F4_55mm\noise_profile.mat'));
+load(fullfile(data_config.path, 'noise_calibration\ILCE7\EXP8_ISO100_F4_55mm\noise_profile.mat'));
 
 cmap = brewermap(64, 'OrRd');
 

@@ -18,12 +18,12 @@ CMAP = [176,85,116;...
         94,159,163;...
         192,214,215]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % load data
-loss = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation.mat'));
-loss_pca = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation_pca.mat'));
-loss_rbfn = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation_rbfn.mat'));
+loss = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation.mat'));
+loss_pca = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation_pca.mat'));
+loss_rbfn = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\validation_rbfn.mat'));
 
 % comparison for 3 validation sets
 validation_sets_names = {'diff_illuminant',...
@@ -83,9 +83,9 @@ end
 clearvars -except DELTA_LAMBDA CMAP data_path
 
 % load data
-loss = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation.mat'));
-loss_pca = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation_pca.mat'));
-loss_rbfn = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation_rbfn.mat'));
+loss = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation.mat'));
+loss_pca = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation_pca.mat'));
+loss_rbfn = load(fullfile(data_config.path, 'imaging_simulation_model\parameters_estimation\responses\ILCE7\validation_rbfn.mat'));
 
 % comparison for 3 validation sets
 validation_sets_names = {'diff_illuminant',...

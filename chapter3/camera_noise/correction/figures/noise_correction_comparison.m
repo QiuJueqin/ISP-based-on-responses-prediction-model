@@ -2,9 +2,9 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-sample_raw_dir = fullfile(config.data_path, 'noise_calibration\NIKON_D3x\dsg_sample.NEF');
+sample_raw_dir = fullfile(data_config.path, 'noise_calibration\NIKON_D3x\dsg_sample.NEF');
 
 bits = 14;
 raw = double(matrawread(sample_raw_dir, 'inbit', bits, 'outbit', 'same'));
@@ -14,7 +14,7 @@ hax = axes(hfig, 'position', [.025 .05 .85 .9]);
 imshow(raw(11:end-10, 11:end-10, :)/(2^bits-1), 'parent', hax);
 
 % load noise correction profile
-load(fullfile(config.data_path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
+load(fullfile(data_config.path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
 raw_corr = noise_corr(raw, noise_profile);
 
 diff = abs(raw - raw_corr)./raw_corr;

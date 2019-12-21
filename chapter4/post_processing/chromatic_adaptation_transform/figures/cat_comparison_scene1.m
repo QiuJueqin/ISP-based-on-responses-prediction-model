@@ -5,22 +5,22 @@ clear; close all; clc;
 BRIGHTNESS_SCALE = 1.6;
 CROP_MARGIN = 200;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 % read camera parameters
-params_dir = fullfile(config.data_path,...
+params_dir = fullfile(data_config.path,...
                       'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
 load(params_dir);
 
 % read iso profile
-iso_profile = load(fullfile(config.data_path,...
+iso_profile = load(fullfile(data_config.path,...
                             'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
                         
 % read color correction profile
-cc_profile = load(fullfile(config.data_path,...
+cc_profile = load(fullfile(data_config.path,...
                            'color_correction\NIKON_D3x\cc_profile.mat'));
 
-img_dir = fullfile(config.data_path,...
+img_dir = fullfile(data_config.path,...
                     'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\DSC_2326.png');
 
 img = double(imread(img_dir)) / (2^16 - 1);

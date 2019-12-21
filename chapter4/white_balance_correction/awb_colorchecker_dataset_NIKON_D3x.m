@@ -12,20 +12,12 @@ XLIM = [-0.6, 1.2];
 YLIM = [-0.4, 0.6];
 GRID_SIZE = 128;
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x',...
+                                    {'ocp', 'standard_gamut'});
 
-% load ocp parameters
-ocp_params_dir = fullfile(config.data_path,...
-                          'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-load(ocp_params_dir);
-
-% load standard gamut
-std_gamut_dir = fullfile(config.data_path,...
-                         'white_balance_correction\gamut_mapping\NIKON_D3x\std_gamut.mat');
-load(std_gamut_dir);
-
-result_dir = fullfile(config.data_path,...
-                       'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\results');
+result_dir = fullfile(data_config.path,...
+                      'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\results');
 if ~exist(result_dir, 'dir')                   
     mkdir(result_dir);
 end
@@ -37,8 +29,8 @@ if ~exist(record_dir, 'file')
 end
 
 % read test images
-dataset_dir = fullfile(config.data_path,...
-                        'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
+dataset_dir = fullfile(data_config.path,...
+                       'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
 dataset = dir(dataset_dir);
 
 errors = zeros(numel(dataset), 1);
@@ -58,10 +50,11 @@ for i = 1:numel(dataset)
     rgb = dlmread(rgb_dir);
     
     illuminant_rgb = get_illuminant_rgb(rgb);
-    illuminant_xy_orth = rgb2ocp(illuminant_rgb, ocp_params);
+    illuminant_xy_orth = rgb2ocp(illuminant_rgb, camera_config.ocp);
     
     [~, gains] = awb(img,...
-                     ocp_params, NEUTRAL_REGION0, std_gamut, STD_ILLUMINANT_RGB,...
+                     camera_config.ocp, NEUTRAL_REGION0,...
+                     camera_config.standard_gamut, STD_ILLUMINANT_RGB,...
                      XLIM, YLIM, GRID_SIZE,...
                      mask);
                  

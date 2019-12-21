@@ -1,6 +1,6 @@
 function [xy_orth, xy_rot, xy] = rgb2ocp(responses, ocp_params, varargin)
 % RGB2OCP converts camera raw RGB responses in to orthogonal chromatic
-% plane as per Eq.() in Chapter 4.
+% plane as per Eq.(4.18).
 
 args = parseInput(varargin{:});
 if args.reverse_y

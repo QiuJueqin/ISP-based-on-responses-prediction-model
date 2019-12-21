@@ -7,11 +7,11 @@ CAMERA_MODEL = 'NIKON_D3x';
 INBIT = 14;
 SQUARE_SIZE = 50;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 %% extracting responses for ISO100, exposure times from 1/200s to 1/8s
 
-folders = fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\ISO100_EXP200_to_8_F4_55mm\*.NEF');
+folders = fullfile(data_config.path, 'response_prediction\preliminaries\NIKON_D3x\ISO100_EXP200_to_8_F4_55mm\*.NEF');
 contents = dir(folders);
 profile_dir = '';
 exposures = zeros(numel(contents), 1);
@@ -19,7 +19,7 @@ mean_values = zeros(numel(contents), 3);
 
 for i = 1:numel(contents)
     raw_dir = fullfile(contents(i).folder, contents(i).name);
-    profile_dir_tmp = findprofile(raw_dir, config.data_path);
+    profile_dir_tmp = findprofile(raw_dir, data_config.path);
     
     % load the noise calibration profile if it does not exist in the
     % workspace
@@ -47,14 +47,14 @@ for i = 1:numel(contents)
 	mean_values(i, :) = squeeze(mean(roi, [1, 2]))';
 end
 
-save_dir = fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO100.mat');
+save_dir = fullfile(data_config.path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO100.mat');
 save(save_dir, 'exposures', 'mean_values');
 
 %% extracting responses for ISO800, exposure times from 1/200s to 1/8s
 
 clearvars -except data_path SQUARE_SIZE
 
-folders = fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\ISO800_EXP200_to_8_F4_55mm\*.NEF');
+folders = fullfile(data_config.path, 'response_prediction\preliminaries\NIKON_D3x\ISO800_EXP200_to_8_F4_55mm\*.NEF');
 contents = dir(folders);
 profile_dir = '';
 exposures = zeros(numel(contents), 1);
@@ -62,7 +62,7 @@ mean_values = zeros(numel(contents), 3);
 
 for i = 1:numel(contents)
     raw_dir = fullfile(contents(i).folder, contents(i).name);
-    profile_dir_tmp = findprofile(raw_dir, config.data_path);
+    profile_dir_tmp = findprofile(raw_dir, data_config.path);
     
     % load the noise calibration profile if it does not exist in the
     % workspace
@@ -90,5 +90,5 @@ for i = 1:numel(contents)
 	mean_values(i, :) = squeeze(mean(roi, [1, 2]))';
 end
 
-save_dir = fullfile(config.data_path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO800.mat');
+save_dir = fullfile(data_config.path, 'response_prediction\preliminaries\NIKON_D3x\responses_vs_exposures_ISO800.mat');
 save(save_dir, 'exposures', 'mean_values');

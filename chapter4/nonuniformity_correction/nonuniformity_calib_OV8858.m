@@ -7,11 +7,11 @@ KNOTS = [0, .15, .3, .5, .7, .85, 1];
 ORDER = 3;
 BIT = 16;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 %% calculate B-spline surface parameters
 
-contents = dir(fullfile(config.data_path, 'nonuniformity_correction\OV8858'));
+contents = dir(fullfile(data_config.path, 'nonuniformity_correction\OV8858'));
 params = struct([]);
 
 for i = 3:numel(contents)
@@ -50,5 +50,5 @@ end
 
 [nonuniformity_profile.components, nonuniformity_profile.maps] = gain2coefs_train(gains, coefs);
 
-save_dir = fullfile(config.data_path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat');
+save_dir = fullfile(data_config.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat');
 save(save_dir, 'nonuniformity_profile');

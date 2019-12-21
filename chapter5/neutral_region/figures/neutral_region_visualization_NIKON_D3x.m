@@ -21,7 +21,8 @@ CMAP = [117, 155, 186;...
         220, 104, 146;...
         121, 119, 120]/255;
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'ocp'});
 
 % some illuminants' spds
 daylight_series_wavelengths = 380:10:780;
@@ -49,70 +50,60 @@ high_pressure_discharge_lamps_wavelengths = 380:5:780;
 high_pressure_discharge_lamps_spds = xlsread('cie.15.2004.tables.xls', 7, 'B6:F86')';
 
 led_wavelengths = 380:1:780;
-led_spds = xlsread('illuminant_spds_database.xlsx', 1, 'CM9:KL409')';
-led_ccts = xlsread('illuminant_spds_database.xlsx', 1, 'CM7:KL7')';
+led_spds = xlsread('illuminant_spds_dataset.xlsx', 1, 'CM9:KL409')';
+led_ccts = xlsread('illuminant_spds_dataset.xlsx', 1, 'CM7:KL7')';
 led_spds = led_spds(led_ccts >= 3300, :);
 
-% pack into an illuminants database
-illuminants_database_wavelengths = {daylight_series_wavelengths;...
+% pack into an illuminants dataset
+illuminants_dataset_wavelengths = {daylight_series_wavelengths;...
                                     black_bodies_wavelengths;...
                                     cie_standard_illuminants_wavelengths;...
                                     fluorescent_lamps_wavelengths;...
                                     high_pressure_discharge_lamps_wavelengths;...
                                     led_wavelengths};
 
-illuminants_database_spds = {daylight_series_spds;...
+illuminants_dataset_spds = {daylight_series_spds;...
                              black_bodies_spds;...
                              cie_standard_illuminants_spds;...
                              fluorescent_lamps_spds;...
                              high_pressure_discharge_lamps_spds;...
                              led_spds};
                          
-illuminants_database_legends = {' Daylights 4000K-12000K';...
+illuminants_dataset_legends = {' Daylights 4000K-12000K';...
                                 ' Black Bodies 3000K-12000K';...
                                 ' CIE Standard Illuminants';...
                                 ' Fluorescent Lamps';...
                                 ' High Pressure Discharge Lamps';...
                                 ' LED Lamps'};
                             
-nb_illuminant_types = numel(illuminants_database_spds);
-
-
-% load parameters of imaging simulation model
-params_dir = fullfile(config.data_path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
-
-% load ocp parameters
-ocp_params_dir = fullfile(config.data_path,...
-                          'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-load(ocp_params_dir);
-
-illuminants_database_responses = cell(nb_illuminant_types, 1);
-illuminants_database_xy_orths = cell(nb_illuminant_types, 1);
-illuminants_database_chromaticities = cell(nb_illuminant_types, 1);
+nb_illuminant_types = numel(illuminants_dataset_spds);
+illuminants_dataset_responses = cell(nb_illuminant_types, 1);
+illuminants_dataset_xy_orths = cell(nb_illuminant_types, 1);
+illuminants_dataset_chromaticities = cell(nb_illuminant_types, 1);
 
 for i = 1:nb_illuminant_types
-    wavelengths = illuminants_database_wavelengths{i};
-    spds = illuminants_database_spds{i};
+    wavelengths = illuminants_dataset_wavelengths{i};
+    spds = illuminants_dataset_spds{i};
     
-    illuminants_database_chromaticities{i} = spectra2colors(spds, wavelengths);
+    illuminants_dataset_chromaticities{i} = spectra2colors(spds, wavelengths);
     
-    [responses, saturation] = responses_predict(spds, wavelengths, params, GAINS, T, DELTA_LAMBDA);
+    [responses, saturation] = responses_predict(spds, wavelengths, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
     
     % adjust the amplitudes of spds to ensure the predicted responses would
     % not be onversaturated.
     if saturation >= 1
-        responses = responses_predict(spds/saturation, wavelengths, params, GAINS, T, DELTA_LAMBDA);
+        responses = responses_predict(spds/saturation, wavelengths,...
+                                      camera_config.responses.params,...
+                                      GAINS, T, DELTA_LAMBDA);
     end
     assert(max(responses(:)) < 1);
-    illuminants_database_responses{i} = responses;
-    illuminants_database_xy_orths{i} = rgb2ocp(responses, ocp_params);
+    illuminants_dataset_responses{i} = responses;
+    illuminants_dataset_xy_orths{i} = rgb2ocp(responses, camera_config.ocp);
 end
 
 % orthogonal chromatic plane
 
-ocp_diagram = ocp_colorize(ocp_params, XLIM, YLIM, 512);
+ocp_diagram = ocp_colorize(camera_config.ocp, XLIM, YLIM, 512);
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 18]);
 image(XLIM, YLIM, flipud(ocp_diagram));
@@ -120,11 +111,11 @@ image(XLIM, YLIM, flipud(ocp_diagram));
 hold on; box on; grid on;
 
 for i = 1:nb_illuminant_types
-    xy_orth = illuminants_database_xy_orths{i};
+    xy_orth = illuminants_dataset_xy_orths{i};
     scatter(xy_orth(:,1), xy_orth(:,2), 32, CMAP(i, :), 'filled');
 end
 
-legend(illuminants_database_legends,...
+legend(illuminants_dataset_legends,...
        'fontname', 'times new roman', 'fontsize', 18, 'box', 'off');
 
 xlim(XLIM);
@@ -142,7 +133,7 @@ set(gca, 'fontname', 'times new roman', 'fontsize', 22, 'linewidth', 1.5,...
 
 % orthogonal chromatic plane with boundary
 
-ocp_diagram = ocp_colorize(ocp_params, XLIM, YLIM, 512);
+ocp_diagram = ocp_colorize(camera_config.ocp, XLIM, YLIM, 512);
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 18]);
 image(XLIM, YLIM, flipud(ocp_diagram));
@@ -150,14 +141,14 @@ image(XLIM, YLIM, flipud(ocp_diagram));
 hold on; box on; grid on;
 
 for i = 1:nb_illuminant_types
-    xy_orth = illuminants_database_xy_orths{i};
+    xy_orth = illuminants_dataset_xy_orths{i};
     scatter(xy_orth(:,1), xy_orth(:,2), 32, CMAP(i, :), 'filled');
 end
 
 line(NEUTRAL_REGION(:,1), NEUTRAL_REGION(:,2),...
      'color', RED, 'linewidth', 3, 'linestyle', ':');
 
-legend([illuminants_database_legends; ' Neutral Region Boundary'],...
+legend([illuminants_dataset_legends; ' Neutral Region Boundary'],...
        'fontname', 'times new roman', 'fontsize', 18, 'box', 'off');
 
 xlim(XLIM);
@@ -178,12 +169,12 @@ set(gca, 'fontname', 'times new roman', 'fontsize', 22, 'linewidth', 1.5,...
 hax = cie_diagram('xlim', [.1, .6], 'ylim', [.2, .6], 'saturation', .5);
 hold on;
 for i = 1:nb_illuminant_types
-    xyz = illuminants_database_chromaticities{i};
+    xyz = illuminants_dataset_chromaticities{i};
     chromaticities = xyz(:, 1:2) ./ sum(xyz, 2);
     hs{i} = scatter(hax, chromaticities(:,1), chromaticities(:,2), 32, CMAP(i, :), 'filled');
 end
 
-legend([hs{:}], illuminants_database_legends,...
+legend([hs{:}], illuminants_dataset_legends,...
        'fontname', 'times new roman', 'fontsize', 18, 'box', 'off');
 
 set(gcf, 'unit', 'centimeters', 'position', [5, 5, 24, 18]);

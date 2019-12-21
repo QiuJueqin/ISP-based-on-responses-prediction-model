@@ -26,7 +26,7 @@ CV_THRESHOLD = 0.1;
 BOX_SIZE = 50;
 BOX_LINEWIDTH = 3;
 
-config = parse_data_config;
+data_config = parse_data_config;
 
 if nargin < 2 || isempty(varargin)
     matraw_params = {'inbit', 14, 'outbit', 'same', 'save', false,...
@@ -65,7 +65,7 @@ profile_dir = '';
 for i = 1:numel(contents)
     raw_dir = fullfile(contents(i).folder, contents(i).name);
     
-    profile_dir_tmp = findprofile(raw_dir, config.data_path);
+    profile_dir_tmp = findprofile(raw_dir, data_config.path);
     % load the noise calibration profile if it does not exist in the
     % workspace
     if ~strcmpi(profile_dir, profile_dir_tmp)

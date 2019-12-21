@@ -2,29 +2,26 @@
 
 clear; close all; clc;
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains'});
 
-sample_raw_dir = fullfile(config.data_path, 'noise_calibration\NIKON_D3x\dsg_sample.NEF');
+sample_raw_dir = fullfile(data_config.path, 'noise_calibration\NIKON_D3x\dsg_sample.NEF');
 
 bits = 14;
 [raw, info] = matrawread(sample_raw_dir, 'inbit', bits, 'outbit', 'same');
 iso = info.DigitalCamera.ISOSpeedRatings;
 
 % noise correction
-load(fullfile(config.data_path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
+load(fullfile(data_config.path, 'noise_calibration\NIKON_D3x\EXP8_ISO100_F4_55mm\noise_profile.mat'));
 raw = noise_corr(double(raw), noise_profile);
 
 % non-linearity conversion
-iso_profile = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
-
-gains = iso2gains(iso, iso_profile);
-
-params = load(fullfile(config.data_path, 'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat'));
+gains = iso2gains(iso, camera_config.gains);
 
 img = raw / (2^bits - 1);
 img = max(min(img, 1), 0);
 
-img_linear = raw2linear(img, params.params, gains);
+img_linear = raw2linear(img, camera_config.responses.params, gains);
 
 figure; imshow(img);
 figure; imshow(img_linear);

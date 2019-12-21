@@ -13,16 +13,12 @@ NEUTRAL_REGION = [-0.3,  0.05;...
                   -0.3, -0.05;...
                   -0.3,  0.05];
 
-config = parse_data_config;
+data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', 'ocp');
 
-img_dir = fullfile(config.data_path,...
+img_dir = fullfile(data_config.path,...
                    'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\DSC_2790.png');
 mask_dir = strrep(img_dir, '.png', '_mask.txt');
-    
-% load ocp parameters
-ocp_params_dir = fullfile(config.data_path,...
-                          'white_balance_correction\neutral_point_statistics\NIKON_D3x\ocp_params.mat');
-load(ocp_params_dir);
 
 img = double(imread(img_dir)) / (2^16 - 1);
 mask = dlmread(mask_dir);
@@ -30,7 +26,7 @@ mask = dlmread(mask_dir);
 rgb = img2rgb(img, mask);
 
 [gains, whist, whist_moved, hist_moved, whist0, hist0] =...
-    npstat(rgb, ocp_params, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
+    npstat(rgb, camera_config.ocp, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
 
 % hist0
 hist_visualize(hist0);

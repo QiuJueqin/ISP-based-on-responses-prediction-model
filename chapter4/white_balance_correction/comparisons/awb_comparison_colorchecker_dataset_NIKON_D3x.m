@@ -7,14 +7,14 @@ algorithms = {'gray_world',...
               'gray_edge_order2',...
               'weng'};
 
-config = parse_data_config;
+data_config = parse_data_config;
 
-database_dir = fullfile(config.data_path,...
+dataset_dir = fullfile(data_config.path,...
                         'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\*.png');
-database = dir(database_dir);
+dataset = dir(dataset_dir);
 
 % prepare a record txt file for each algorithm
-result_dir = fullfile(config.data_path,...
+result_dir = fullfile(data_config.path,...
                       'white_balance_correction\neutral_point_statistics\NIKON_D3x\colorchecker_dataset\results\comparisons');
 if ~exist(result_dir, 'dir')                   
     mkdir(result_dir);
@@ -28,13 +28,13 @@ for k = 1:numel(algorithms)
     end
 end
 
-errors = zeros(numel(database), numel(algorithms));
+errors = zeros(numel(dataset), numel(algorithms));
 
-for i = 1:numel(database)
-    img_dir = fullfile(database(i).folder, database(i).name);
+for i = 1:numel(dataset)
+    img_dir = fullfile(dataset(i).folder, dataset(i).name);
     [~, img_name, ~] = fileparts(img_dir);
     
-    fprintf('Processing %s (%d/%d)... ', img_name, i, numel(database));
+    fprintf('Processing %s (%d/%d)... ', img_name, i, numel(dataset));
     tic;
     
     mask_dir = strrep(img_dir, '.png', '_mask.txt');
