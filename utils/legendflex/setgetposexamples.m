@@ -7,7 +7,7 @@ function setgetposexamples(n)
 
 %   This demo file will be improved in the future (...I hope)
 
-%   Author: Jérôme Briot, Matlab 6.1.0.450 (R12.1)
+%   Author: JÃ©rÃ´me Briot, Matlab 6.1.0.450 (R12.1)
 %   Contact: dutmatlab@yahoo.fr
 %   Revision: 1.0 (21-Feb-2007)
 %   Comments:

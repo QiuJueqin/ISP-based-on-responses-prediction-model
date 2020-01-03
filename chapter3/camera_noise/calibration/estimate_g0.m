@@ -1,17 +1,17 @@
 function [g0_estimate, mu_estimate_concat] = estimate_g0(raw_dirs_mat, varargin)
 % ESTIMATE_G0 calculates system gain g0 as per Eq.(3.44).
 %
-% raw_dirs_mat:         a cell MATRIX specifying the .NEF file names
-%                       (absolute dir), e.g., D_1(i,j), ..., D_N(i,j).
-%                       ==================== IMPORTANT ====================
-%                       Each ROW in 'raw_dirs' corresponds to one set of
-%                       experiment under a specified illumination intensity.
-%                       For example, if there were 8 sets of different
-%                       illumination intensities and under each intensity
-%                       the capturings were repeated 16 times, then
-%                       'raw_dirs' should be a 8*16 cell matrix. 
-% varargin:             any name-value paramter(s) supported by MatRaw
-% g0_estimate:          estimated g0.
+% raw_dirs_mat:  a cell MATRIX specifying the .NEF file names
+%                (absolute dir), e.g., D_1(i,j), ..., D_N(i,j).
+%                ==================== IMPORTANT ====================
+%                Each ROW in 'raw_dirs' corresponds to one set of
+%                experiment under a specified illumination intensity.
+%                For example, if there were 8 sets of different
+%                illumination intensities and under each intensity
+%                the capturings were repeated 16 times, then
+%                'raw_dirs' should be a 8*16 cell matrix. 
+% varargin:      any name-value paramter(s) supported by MatRaw
+% g0_estimate:   estimated g0.
 
 w1 = 15;
 

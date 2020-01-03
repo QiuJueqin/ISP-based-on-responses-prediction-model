@@ -37,7 +37,7 @@ function setpos(h,fmt,href)
 %
 %   See also GETPOS, SET, GET.
 
-%   Author: Jérôme Briot, Matlab 6.1.0.450 (R12.1)
+%   Author: JÃ©rÃ´me Briot, Matlab 6.1.0.450 (R12.1)
 %   Contact: dutmatlab@yahoo.fr
 %   Revision: 1.0 (12-Feb-2007)
 %             1.1 (14-Feb-2007) Third input argument HREF added.

@@ -7,7 +7,7 @@ function [X,rho,eta] = art(A,b,k)
 % technique), applied to the system A x = b.  The number of
 % iterations is k.
 
-% Reference: F. Natterer and F. Wübbeling, Mathematical Methods
+% Reference: F. Natterer and F. WÃ¼bbeling, Mathematical Methods
 % in Image Reconstruction, SIAM, Philadelphia, 2001; Sect. 5.3.1.
 
 % Per Christian Hansen, IMM, APr. 16, 2011.

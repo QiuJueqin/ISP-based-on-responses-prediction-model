@@ -648,7 +648,7 @@ drawnow; % Not sure why this is necessary for the currentaxes to take effect, bu
 %
 % TODO: need to add proper calcs for when title included
 %
-% Thanks to Søren Enemark for this suggestion.
+% Thanks to SÃ¸ren Enemark for this suggestion.
 
 if ~addtitle
     try % TODO: Crashing on some edge cases

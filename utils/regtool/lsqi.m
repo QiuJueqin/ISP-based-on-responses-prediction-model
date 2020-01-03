@@ -119,7 +119,7 @@ s2 = s.^2;
 
 % Iterate, using Hebden-Newton iteration, i.e., solve the nonlinear
 % problem || L x ||^(-2) - alpha^(-2) = 0.  This version was found
-% experimentally to work slightæy better than Newton's method for
+% experimentally to work slightÃ¦y better than Newton's method for
 % alpha-values near || L x^exact ||.
 lambda = lambda_0; step = 1; it = 0;
 while (abs(step) > thr*lambda & it < it_max), it = it+1;
