@@ -8,11 +8,13 @@ DARKNESS_THRESHOLD = 0.01;
 AUGMENT_CENTER = [1.5, 1];
 AUGMENT_RATIO = 0.05;
 K = 200;
-GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms exposure time
+ISO = 100;
 RED = [255, 84, 84]/255;
 
 data_config = parse_data_config;
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains'});
+gains = iso2gains(ISO, camera_config.gains);
 
 spectral_reflectances_dataset = xlsread('spectral_reflectances_dataset.xlsx', 1, 'D3:CF9272');
 % keep only 400-700nm
@@ -56,19 +58,14 @@ ylabel('Spectral Reflectance', 'fontsize', 26, 'fontname', 'times new roman');
    
 %% visualize standard gamut
 
-% load parameters of imaging simulation model
-params_dir = fullfile(data_config.path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
-
 std_illuminant_spd = xlsread('cie.15.2004.tables.xls',1,'C23:C83')'; % D65
 
 spectra = std_illuminant_spd .* spectral_reflectances_dataset;
 xyz = spectra2colors(spectra, WAVELENGTHS);
 colors = max(min(xyz2rgb(1.2 * xyz / max(xyz(:))), 1), 0);
 
-[~, saturation] = responses_predict(spectra, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-responses = responses_predict(spectra/saturation, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
+[~, saturation] = responses_predict(spectra, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
+responses = responses_predict(spectra/saturation, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
 
 darkness_indices = any(responses < DARKNESS_THRESHOLD, 2);
 responses(darkness_indices, :) = [];

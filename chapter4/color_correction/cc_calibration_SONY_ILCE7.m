@@ -4,8 +4,8 @@ clear; close all; clc;
 
 DELTA_LAMBDA = 5;
 WAVELENGTHS = 400:DELTA_LAMBDA:700;
-GAINS = [0.0712, 0.0373, 0.0730]; % ISO100
 T = 0.01; % 10ms
+ISO = 100;
 CC_MODEL = 'root6x3';
 
 % load 'unknown' illuminant spds
@@ -18,9 +18,8 @@ unknown_illuminant_spds = [xlsread('cie.15.2004.tables.xls', 1, 'C27:C87')';... 
 
 % load parameters of imaging simulation model
 data_config = parse_data_config;
-params_dir = fullfile(data_config.path,...
-                      'imaging_simulation_model\parameters_estimation\responses\ILCE7\camera_parameters.mat');
-load(params_dir);
+camera_config = parse_camera_config('SONY_ILCE7', {'responses', 'gains'});
+gains = iso2gains(ISO, camera_config.gains);
 
 % load spectral reflectane data of Classic ColorChecker
 wavelengths = 400:10:700;
@@ -44,17 +43,16 @@ for i = 1:numel(unknown_illuminant_names)
     % training
     spectra_train = spectral_reflectance_train .* unknown_illuminant_spd;
     
-    
-    [~, saturation] = responses_predict(spectra_train, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_train_ = responses_predict(spectra_train/saturation, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_train_ = raw2linear(camera_rgb_train_, params, GAINS); % back to linear responses
+    [~, saturation] = responses_predict(spectra_train, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
+    camera_rgb_train_ = responses_predict(spectra_train/saturation, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
+    camera_rgb_train_ = raw2linear(camera_rgb_train_, camera_config.responses.params, gains); % back to linear responses
     
     neutral_idx = [61, 62, 63, 64, 65];
-    gains.(iname) = [camera_rgb_train_(neutral_idx, 1) \ camera_rgb_train_(neutral_idx, 2),...
-                     1,...
-                     camera_rgb_train_(neutral_idx, 3) \ camera_rgb_train_(neutral_idx, 2)];
+    wb_gains.(iname) = [camera_rgb_train_(neutral_idx, 1) \ camera_rgb_train_(neutral_idx, 2),...
+                        1,...
+                        camera_rgb_train_(neutral_idx, 3) \ camera_rgb_train_(neutral_idx, 2)];
 	camera_rgb_train.(iname) = camera_rgb_train_;
-    camera_rgb_wb_train.(iname) = camera_rgb_train.(iname) .* gains.(iname);
+    camera_rgb_wb_train.(iname) = camera_rgb_train.(iname) .* wb_gains.(iname);
     
     [matrix.(iname),...
      scale.(iname),...
@@ -67,11 +65,11 @@ for i = 1:numel(unknown_illuminant_names)
                                                       
 	% validation
     spectra_val = spectral_reflectance_val .* unknown_illuminant_spd;
-    [~, saturation] = responses_predict(spectra_val, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_val_ = responses_predict(spectra_val/saturation, WAVELENGTHS, params, GAINS, T, DELTA_LAMBDA);
-    camera_rgb_val_ = raw2linear(camera_rgb_val_, params, GAINS); % back to linear responses
+    [~, saturation] = responses_predict(spectra_val, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
+    camera_rgb_val_ = responses_predict(spectra_val/saturation, WAVELENGTHS, camera_config.responses.params, gains, T, DELTA_LAMBDA);
+    camera_rgb_val_ = raw2linear(camera_rgb_val_, camera_config.responses.params, gains); % back to linear responses
 	camera_rgb_val.(iname) = camera_rgb_val_;
-    camera_rgb_wb_val.(iname) = camera_rgb_val.(iname) .* gains.(iname);
+    camera_rgb_wb_val.(iname) = camera_rgb_val.(iname) .* wb_gains.(iname);
     
     [predicted_responses_val.(iname),...
      errs_val.(iname)] = ccmvalidate(camera_rgb_wb_val.(iname),...
@@ -98,7 +96,7 @@ for i = 1:numel(unknown_illuminant_names)
 end
 
 save_dir = fullfile(data_config.path,...
-                    'color_correction\ILCE7\color_correction_calibration_data.mat');
+                    'color_correction\SONY_ILCE7\color_correction_calibration_data.mat');
 save(save_dir, 'canonical_xyz_train', 'canonical_xyz_val',...
                'camera_rgb_train', 'camera_rgb_val',...
                'camera_rgb_wb_train', 'camera_rgb_wb_val',...

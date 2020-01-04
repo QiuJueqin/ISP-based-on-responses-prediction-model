@@ -1,11 +1,8 @@
 function color_diff(xyz_reference, xyz)
 % compare color differences between test samples XYZ and reference samples 
 % XYZ_REFERENCE on CIE1976 a*b* chromaticity plane
-
-
 GRAY = [.5, .5, .5];
 SCATTER_SIZE = 160;
-
 
 assert(isequal(size(xyz_reference), size(xyz)));
 

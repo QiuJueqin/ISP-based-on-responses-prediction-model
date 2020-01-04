@@ -1,6 +1,7 @@
 clear; close all; clc;
 
 data_config = parse_data_config;
+
 load(fullfile(data_config.path,...
               'color_correction\NIKON_D3x\color_correction_calibration_data.mat'));
 

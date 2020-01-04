@@ -5,15 +5,15 @@ function config = parse_camera_config(camera_name, profile_names)
 %
 % INPUTS:
 % profile_names: a cell containing module names to load calibration
-%                profiles. ('responses' | 'gains' | 'color' | 'ocp' |
-%                'standard_gamut')
+%                profiles. ('responses' | 'gains' | 'ocp' | 'standard_gamut' |
+%                'color')
 
 fid = fopen(sprintf('%s.conf', camera_name));
 if fid == -1
     error('no data_configuration file for camera %s is found.', camera_name);
 end
 
-default_profile_names = {'responses', 'gains', 'color', 'standard_gamut'};
+default_profile_names = {'responses', 'gains', 'ocp', 'standard_gamut', 'color'};
 
 if nargin < 2 || isempty(profile_names)
     profile_names = default_profile_names;
@@ -28,20 +28,22 @@ data_config = parse_data_config;
 
 while ~feof(fid)
     line = fgetl(fid);
-    if ~startsWith(line, '#')
-        line = strrep(line, ' ', '');
-        s = strsplit(line, '=');
-        if ismember(s{1}, profile_names)
-            key = profile_names{strcmpi(s{1}, profile_names)};
-            profile_path = fullfile(data_config.path, s{2});
-            profile_path = strrep(profile_path, [filesep, filesep], filesep);
-            try
-                config.(key) = load(profile_path);
-            catch
-                warning('%s profile is not found for %s. Check the directory: %s',...
-                        key, camera_name, profile_path);
-            end
-        end
+    if startsWith(line, '#')
+        continue;
+    end
+    line = strrep(line, ' ', '');
+    s = strsplit(line, '=');
+    if ~ismember(s{1}, profile_names)
+        continue;
+    end
+    key = profile_names{strcmpi(s{1}, profile_names)};
+    profile_path = fullfile(data_config.path, s{2});
+    profile_path = strrep(profile_path, [filesep, filesep], filesep);
+    try
+        config.(key) = load(profile_path);
+    catch
+        warning('%s profile is not found for %s. Check the directory: %s',...
+                key, camera_name, profile_path);
     end
 end
 

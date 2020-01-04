@@ -3,19 +3,7 @@
 clear; close all; clc;
 
 data_config = parse_data_config;
-
-% read camera parameters
-params_dir = fullfile(data_config.path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
-
-% read iso profile
-iso_profile = load(fullfile(data_config.path,...
-                            'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
-                        
-% read color correction profile
-cc_profile = load(fullfile(data_config.path,...
-                           'color_correction\NIKON_D3x\cc_profile.mat'));
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains', 'color'});
 
 img_names = {'DSC_2312.png', 'DSC_2838.png', 'DSC_2388.png', 'DSC_2815.png',...
              'DSC_2855.png', 'DSC_2785.png', 'DSC_2811.png', 'DSC_2835.png'};
@@ -34,7 +22,7 @@ for i = 1:numel(img_names)
     exposure_time = info.DigitalCamera.ExposureTime;
 
     % estimate the luminance of the white object in the input image
-    luminance = luminance_estimate(img, iso, exposure_time, params, iso_profile);
+    luminance = luminance_estimate(img, iso, exposure_time, camera_config.responses.params, camera_config.gains);
     
     rgb_dir = strrep(img_dir, '.png', '_rgb.txt'); % ground-truth
     rgb = dlmread(rgb_dir);
@@ -46,7 +34,7 @@ for i = 1:numel(img_names)
     % image without chromatic adaptation transformation
     img_wb = img .* reshape(awb_gains, 1, 1, 3);
     img_wb = max(min(img_wb, 1), 0);
-    img_cc = cc(img_wb, awb_gains, cc_profile);
+    img_cc = cc(img_wb, awb_gains, camera_config.color);
     img_cc = lin2rgb(img_cc);
     img_cc = imadjust(img_cc, [0.04, 0.96], [0, 1]);
     

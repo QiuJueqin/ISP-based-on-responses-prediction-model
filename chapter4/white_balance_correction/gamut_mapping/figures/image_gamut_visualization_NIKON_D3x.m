@@ -29,12 +29,15 @@ rgb = img2rgb(img, mask);
 
 rb = rgb(:, [1, 3]) ./ rgb(:, 2);
 
-[candidate_neutral_region, gamut_of_maps, vertices_maps] = gmap(rgb, camera_config.ocp, camera_config.standard_gamut, STD_ILLUMINANT_RGB);
+[candidate_neutral_region, gamut_of_maps, vertices_maps] = gmap(rgb,...
+                                                                camera_config.ocp.ocp_params,...
+                                                                camera_config.standard_gamut.std_gamut,...
+                                                                STD_ILLUMINANT_RGB);
 
 neutral_region = poly2_intersect(NEUTRAL_REGION0, candidate_neutral_region);
 
 % plot gamut of image (2d)
-gamut_visualize(rb, camera_config.standard_gamut, true, {'$\frac{D_r}{D_g}$', '$\frac{D_b}{D_g}$'});
+gamut_visualize(rb, camera_config.standard_gamut.std_gamut, true, {'$\frac{D_r}{D_g}$', '$\frac{D_b}{D_g}$'});
 
 % plot gamut of image (3d)
 gamut_visualize(rgb);

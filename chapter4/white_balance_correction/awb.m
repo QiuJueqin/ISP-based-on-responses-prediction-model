@@ -53,8 +53,7 @@ end
 hist_visualize(whist, intersected_neutral_region);
 
 img_wb = img .* reshape(gains, 1, 1, 3);
-
-img_wb = max(minimg_wbimg, 1), 0);
+img_wb = max(min(img_wb, 1), 0);
 
 end
 

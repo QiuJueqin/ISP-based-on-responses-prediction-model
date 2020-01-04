@@ -1,16 +1,16 @@
 clear; close all; clc;
 
 DELTA_LAMBDA = 5;
-GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms
+ISO = 100;
 WAVELENGTHS = 380:DELTA_LAMBDA:780;
 NB_TEMPERATURES = 50;
 RED = [255, 84, 84]/255;
 BLUE = [0, 128, 220]/255;
 
 data_config = parse_data_config;
-camera_config = parse_camera_config('NIKON_D3x', {'responses', 'ocp'});
-
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains', 'ocp'});
+gains = iso2gains(ISO, camera_config.gains);
 %% black bodies
 
 temperatures = 1 ./ linspace(1/3200, 1/12000, NB_TEMPERATURES);
@@ -27,7 +27,7 @@ end
 % responses prediction for black bodies from 3200K to 12000K
 responses_bb = responses_predict(spectra_bb/2, WAVELENGTHS,...
                                  camera_config.responses.params,...
-                                 GAINS, T, DELTA_LAMBDA);
+                                 gains, T, DELTA_LAMBDA);
 
 
 %% iso-temperature illuminants
@@ -40,7 +40,7 @@ spectra_duv = spectra_duv ./ XYZ_(:, 2);
 % responses prediction for iso-temperature illuminants
 responses_duv = responses_predict(spectra_duv/2, WAVELENGTHS,...
                                   camera_config.responses.params,...
-                                  GAINS, T, DELTA_LAMBDA);
+                                  gains, T, DELTA_LAMBDA);
 
 %% visualization
 
@@ -76,7 +76,7 @@ text([xy_log_bb(1,1)-0.04; xy_log_bb(end,1)-0.08],...
      'horizontalalignment', 'left', 'interpreter', 'latex');
 
 % rotated plane
-ocp_params_rot = camera_config.ocp;
+ocp_params_rot = camera_config.ocp.ocp_params;
 ocp_params_rot.sigma = 0;
 
 xtick = -0.6:0.3:1.2;
@@ -125,9 +125,9 @@ legend({'Black Body', 'LED D65 Simulator'},...
        'fontname', 'times new roman', 'fontsize', 22, 'box', 'off');
    
 % after shearing
-xy_orth_bb = rgb2ocp(responses_bb, camera_config.ocp);
-xy_orth_duv = rgb2ocp(responses_duv, camera_config.ocp);
-ocp_diagram_orth = ocp_colorize(camera_config.ocp,...
+xy_orth_bb = rgb2ocp(responses_bb, camera_config.ocp.ocp_params);
+xy_orth_duv = rgb2ocp(responses_duv, camera_config.ocp.ocp_params);
+ocp_diagram_orth = ocp_colorize(camera_config.ocp.ocp_params,...
                                 [xtick(1), xtick(end)],...
                                 [ytick(1), ytick(end)],...
                                 512);

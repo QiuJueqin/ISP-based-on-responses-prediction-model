@@ -26,7 +26,7 @@ mask = dlmread(mask_dir);
 rgb = img2rgb(img, mask);
 
 [gains, whist, whist_moved, hist_moved, whist0, hist0] =...
-    npstat(rgb, camera_config.ocp, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
+    npstat(rgb, camera_config.ocp.ocp_params, NEUTRAL_REGION, XLIM, YLIM, GRID_SIZE);
 
 % hist0
 hist_visualize(hist0);

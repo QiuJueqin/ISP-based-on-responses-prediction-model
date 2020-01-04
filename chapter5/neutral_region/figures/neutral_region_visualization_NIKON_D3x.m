@@ -1,8 +1,8 @@
 clear; close all; clc;
 
 DELTA_LAMBDA = 5;
-GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms
+ISO = 100;
 XLIM = [-0.6, 1.2];
 YLIM = [-0.2, 0.8];
 NEUTRAL_REGION = [-0.3,  0.05;...
@@ -22,7 +22,8 @@ CMAP = [117, 155, 186;...
         121, 119, 120]/255;
 
 data_config = parse_data_config;
-camera_config = parse_camera_config('NIKON_D3x', {'responses', 'ocp'});
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains', 'ocp'});
+gains = iso2gains(ISO, camera_config.gains);
 
 % some illuminants' spds
 daylight_series_wavelengths = 380:10:780;
@@ -87,23 +88,23 @@ for i = 1:nb_illuminant_types
     
     illuminants_dataset_chromaticities{i} = spectra2colors(spds, wavelengths);
     
-    [responses, saturation] = responses_predict(spds, wavelengths, camera_config.responses.params, GAINS, T, DELTA_LAMBDA);
+    [responses, saturation] = responses_predict(spds, wavelengths, camera_config.responses.params, gains, T, DELTA_LAMBDA);
     
     % adjust the amplitudes of spds to ensure the predicted responses would
     % not be onversaturated.
     if saturation >= 1
         responses = responses_predict(spds/saturation, wavelengths,...
                                       camera_config.responses.params,...
-                                      GAINS, T, DELTA_LAMBDA);
+                                      gains, T, DELTA_LAMBDA);
     end
     assert(max(responses(:)) < 1);
     illuminants_dataset_responses{i} = responses;
-    illuminants_dataset_xy_orths{i} = rgb2ocp(responses, camera_config.ocp);
+    illuminants_dataset_xy_orths{i} = rgb2ocp(responses, camera_config.ocp.ocp_params);
 end
 
 % orthogonal chromatic plane
 
-ocp_diagram = ocp_colorize(camera_config.ocp, XLIM, YLIM, 512);
+ocp_diagram = ocp_colorize(camera_config.ocp.ocp_params, XLIM, YLIM, 512);
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 18]);
 image(XLIM, YLIM, flipud(ocp_diagram));
@@ -133,7 +134,7 @@ set(gca, 'fontname', 'times new roman', 'fontsize', 22, 'linewidth', 1.5,...
 
 % orthogonal chromatic plane with boundary
 
-ocp_diagram = ocp_colorize(camera_config.ocp, XLIM, YLIM, 512);
+ocp_diagram = ocp_colorize(camera_config.ocp.ocp_params, XLIM, YLIM, 512);
 
 figure('color', 'w', 'unit', 'centimeters', 'position', [5, 5, 24, 18]);
 image(XLIM, YLIM, flipud(ocp_diagram));

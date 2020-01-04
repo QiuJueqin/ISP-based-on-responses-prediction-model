@@ -4,6 +4,30 @@
 
 
 
+## 测试环境
+
+* Windows 10
+
+* MATLAB R2018b
+
+
+### MATLAB 所需工具箱
+
+```
+* Computer Vision System Toolbox
+
+* Curve Fitting Toolbox
+
+* Image Processing Toolbox
+
+* Optimization Toolbox
+
+* Parallel Computing Toolbox
+
+* Statistics and Machine Learning Toolbox
+```
+
+
 ## 更新日志
 
 * 2019.07.04 - 完成论文初稿
