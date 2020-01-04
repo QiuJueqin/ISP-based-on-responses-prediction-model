@@ -1,42 +1,32 @@
 ## 简介
 
-本仓库提供了我的博士论文[《基于原始响应值预测模型的数码相机图像信号处理方法与技术研究》](thesis.pdf)相关代码。
+本仓库提供了我的博士论文[《基于原始响应值预测模型的数码相机图像信号处理方法与技术研究》](thesis.pdf)相关代码，其中使用的数据可于 OneDrive（上传中）进行下载（\~129GB）。
 
 
 
 ## 测试环境
 
-* Windows 10
-
-* MATLAB R2018b
+- Windows 10
+- MATLAB R2018b
 
 
 ### MATLAB 所需工具箱
 
-```
-* Computer Vision System Toolbox
+- Computer Vision System Toolbox
+- Curve Fitting Toolbox
+- Image Processing Toolbox
+- Optimization Toolbox
+- Parallel Computing Toolbox
+- Statistics and Machine Learning Toolbox
 
-* Curve Fitting Toolbox
-
-* Image Processing Toolbox
-
-* Optimization Toolbox
-
-* Parallel Computing Toolbox
-
-* Statistics and Machine Learning Toolbox
-```
 
 
 ## 更新日志
 
-* 2019.07.04 - 完成论文初稿
-
-* 2019.12.04 - 根据盲审意见进行修改
-
-* 2019.12.17 - 根据答辩组意见进行修改
-
-* 2019.12.18 - 定稿
+- 2019.07.04 - 完成论文初稿
+- 2019.12.04 - 根据盲审意见进行修改
+- 2019.12.17 - 根据答辩组意见进行修改
+- 2019.12.18 - 定稿
 
 
 
@@ -115,19 +105,33 @@
 
 ## Intro
 
-This repository contains codes for my doctoral thesis: [*Study on methodology and technology of digital camera image signal processing based on raw responses prediction model*](thesis.pdf) (zh-cn).
+This repository contains codes for my doctoral thesis: [*Study on methodology and technology of digital camera image signal processing based on raw responses prediction model*](thesis.pdf) (zh-cn). The data used in the experiments is available in my OneDrive (\~129GB).
+
+
+
+## Test Environment
+
+- Windows 10
+- MATLAB R2018b
+
+
+### Required MATLAB Toolboxes
+
+- Computer Vision System Toolbox
+- Curve Fitting Toolbox
+- Image Processing Toolbox
+- Optimization Toolbox
+- Parallel Computing Toolbox
+- Statistics and Machine Learning Toolbox
 
 
 
 ## ChangeLog
 
-* 2019.07.04 - initial draft completed
-
-* 2019.12.04 - revised as per comments by anonymous reviewers
-
-* 2019.12.17 - revised as per comments by examining committee
-
-* 2019.12.18 - thesis completed
+- 2019.07.04 - initial draft completed
+- 2019.12.04 - revised as per comments by anonymous reviewers
+- 2019.12.17 - revised as per comments by examining committee
+- 2019.12.18 - thesis completed
 
 
 ## License
