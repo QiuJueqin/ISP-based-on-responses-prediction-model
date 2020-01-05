@@ -33,12 +33,12 @@ for i = 1:numel(image_names)
     
     illuminant_rgb = get_illuminant_rgb(rgb);
     
-    awb_gains = illuminant_rgb(2) ./ illuminant_rgb;
+    wb_gains = illuminant_rgb(2) ./ illuminant_rgb;
     
-    img_wb = img .* reshape(awb_gains, 1, 1, 3);
+    img_wb = img .* reshape(wb_gains, 1, 1, 3);
     img_wb = max(min(img_wb, 1), 0);
     
-    img_cc = cc(img_wb, awb_gains, camera_config.color);
+    img_cc = cc(img_wb, wb_gains, camera_config.color);
     
     img_wb = lin2rgb(imresize(img_wb, 1/4));
     img_cc = lin2rgb(imresize(img_cc, 1/4));

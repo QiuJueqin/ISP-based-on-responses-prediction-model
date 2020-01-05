@@ -1,4 +1,4 @@
-function [components, maps] = gain2coefs_train(gains, spline_coefs)
+function [components, maps] = gain2coefs_train(wb_gains, spline_coefs)
 % GAIN2COEFS_TRAIN finds a set of maps from white-balance gain pair [G_r,
 % G_b] to B-spline surface coefficients using PCA and polynomial model.
 %
@@ -15,7 +15,7 @@ function [components, maps] = gain2coefs_train(gains, spline_coefs)
 NB_COMPONENTS = 6; % number of principal components
 NB_POLY_ITEMS = 6;
 
-assert(size(gains, 2) == 2);
+assert(size(wb_gains, 2) == 2);
 assert(ndims(spline_coefs) == 4 && size(spline_coefs, 3) == 3);
 
 [N, ~, ~, M] = size(spline_coefs);
@@ -33,9 +33,9 @@ for k = 1:3
     wgt = wgt(:, 1:NB_COMPONENTS);
     
     polynomial = [ones(M, 1),...
-                  gains(:,1), gains(:,2),...
-                  gains(:,1).^2, gains(:,2).^2,...
-                  gains(:,1).*gains(:,2)];
+                  wb_gains(:,1), wb_gains(:,2),...
+                  wb_gains(:,1).^2, wb_gains(:,2).^2,...
+                  wb_gains(:,1).*wb_gains(:,2)];
     assert(size(polynomial, 2) == NB_POLY_ITEMS);
     
     % least-square

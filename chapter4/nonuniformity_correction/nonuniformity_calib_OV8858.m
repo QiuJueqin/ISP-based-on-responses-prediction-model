@@ -26,10 +26,10 @@ for i = 3:numel(contents)
     raw_dir = fullfile(content.folder, content.name);
     img = pgmread(raw_dir);
     
-    [coefs, gains, ~] = img2spline(img, KNOTS, ORDER);
+    [coefs, wb_gains, ~] = img2spline(img, KNOTS, ORDER);
     params(end+1).illuminant = illuminant;
     params(end).coefs = coefs;
-    params(end).gains = gains;
+    params(end).wb_gains = wb_gains;
     
     fprintf('done.\n');
 end
@@ -41,14 +41,14 @@ nonuniformity_profile.params = params;
 M = numel(params); % number of training illuminants
 N = size(params(1).coefs, 1); % N = n+1
 
-gains = zeros(M, 2);
+wb_gains = zeros(M, 2);
 coefs = zeros(N, N, 3, M);
 for i = 1:M
-    gains(i, :) = params(i).gains([1, 3]);
+    wb_gains(i, :) = params(i).gains([1, 3]);
     coefs(:, :, :, i) = params(i).coefs;
 end
 
-[nonuniformity_profile.components, nonuniformity_profile.maps] = gain2coefs_train(gains, coefs);
+[nonuniformity_profile.components, nonuniformity_profile.maps] = gain2coefs_train(wb_gains, coefs);
 
 save_dir = fullfile(data_config.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat');
 save(save_dir, 'nonuniformity_profile');

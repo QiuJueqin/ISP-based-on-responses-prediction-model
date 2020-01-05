@@ -8,11 +8,7 @@ WAVELENGTHS = 400:DELTA_LAMBDA:700;
 SATURATION_THRESHOLD = 0.98;
 
 data_config = parse_data_config;
-
-% load parameters of imaging simulation model
-params_dir = fullfile(data_config.path,...
-                      'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\camera_parameters.mat');
-load(params_dir);
+camera_config = parse_camera_config('NIKON_D3x', {'responses', 'gains', 'color'});
 
 % load spectral reflectane data of Classic ColorChecker
 wavelengths = 400:10:700;
@@ -21,14 +17,6 @@ spectral_reflectance = interp1(wavelengths, spectral_reflectance', WAVELENGTHS, 
 spectral_reflectance = (spectral_reflectance(1:2:end, :) + spectral_reflectance(2:2:end, :)) / 2;
 % calculate XYZ values
 lin_srgb_ground_truth = spectra2colors(spectral_reflectance, WAVELENGTHS, 'spd', 'd65', 'output', 'srgb');
-
-% read iso profile
-iso_profile = load(fullfile(data_config.path,...
-                            'imaging_simulation_model\parameters_estimation\responses\NIKON_D3x\gains_profile.mat'));
-                        
-% read color correction profile
-cc_profile = load(fullfile(data_config.path,...
-                           'color_correction\NIKON_D3x\cc_profile.mat'));
 
 % read test images
 dataset_dir = fullfile(data_config.path,...
@@ -46,24 +34,24 @@ for i = 1:numel(dataset)
     raw_dir = strrep(raw_dir, '.png', '.NEF');
     info = getrawinfo(raw_dir);
     iso = info.DigitalCamera.ISOSpeedRatings;
-    gains = iso2gains(iso, iso_profile);
+    gains = iso2gains(iso, camera_config.gains);
     
     rgb_dir = strrep(img_dir, '.png', '_rgb.txt'); % ground-truth
     rgb = dlmread(rgb_dir);
     rgb = max(min(rgb, 1), 0);
-    rgb = raw2linear(rgb, params, gains);
+    rgb = raw2linear(rgb, camera_config.responses.params, gains);
     
     illuminant_rgb = get_illuminant_rgb(rgb);
-    awb_gains = illuminant_rgb(2) ./ illuminant_rgb;
+    wb_gains = illuminant_rgb(2) ./ illuminant_rgb;
     
-    rgb_wb = rgb .* awb_gains;
+    rgb_wb = rgb .* wb_gains;
     
     % skip over-exposured image
     if max(rgb_wb(:)) > SATURATION_THRESHOLD
         continue;
     end
     
-    lin_srgb_cc = cc(rgb_wb, awb_gains, cc_profile);
+    lin_srgb_cc = cc(rgb_wb, wb_gains, camera_config.color);
  	
     % find an optimal scaling factor
     srgb_ground_truth = lin2rgb(lin_srgb_ground_truth);

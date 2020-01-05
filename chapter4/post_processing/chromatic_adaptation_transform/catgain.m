@@ -1,4 +1,4 @@
-function [post_gains, cct] = catgain(gains, cc_profile, F, LA)
+function [post_gains, cct] = catgain(wb_gains, cc_profile, F, LA)
 % CATGAINS calculates a set of re-adjustment coefficients (post gains)
 % based on CAT02 chromatic adaptation transformation model. The obtained
 % coefficients should only be applied to a white-balanced image instead of
@@ -20,8 +20,8 @@ rgb2xyz = [0.4124564, 0.3575761, 0.1804375;...
            0.2126729, 0.7151522, 0.0721750;...
            0.0193339, 0.1191920, 0.9503041]';
 
-if iscolumn(gains)
-    gains = gains';
+if iscolumn(wb_gains)
+    wb_gains = wb_gains';
 end
 
 % use D65 as canonical illuminant
@@ -30,7 +30,7 @@ if isempty(canonical_illuminant_idx)
     error('canonical illuminant (D65) is not found.');
 end
 canonical_illuminant_gains = cc_profile.gains(canonical_illuminant_idx, :);
-rgb_illuminant = canonical_illuminant_gains ./ gains; % camera rgb of illuminant
+rgb_illuminant = canonical_illuminant_gains ./ wb_gains; % camera rgb of illuminant
 
 xyz_illuminant = rgb_illuminant * rgb2xyz;
 xy_illuminant = xyz_illuminant([1, 2]) / sum(xyz_illuminant);

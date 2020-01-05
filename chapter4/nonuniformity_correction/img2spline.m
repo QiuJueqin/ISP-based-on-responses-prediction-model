@@ -1,4 +1,4 @@
-function [coefs, gains, img_corr] = img2spline(img, knots, order)
+function [coefs, wb_gains, img_corr] = img2spline(img, knots, order)
 % IMG2SPLINE calculates B-spline surface parameters for non-uniformity
 % calibration given the input image using 2D B-spline surface fitting.
 %
@@ -11,7 +11,7 @@ function [coefs, gains, img_corr] = img2spline(img, knots, order)
 %
 % OUTPUTS:
 % coefs:        B-spline surface parameters.
-% gains:        white-balance gains [G_r, G_g, G_b].
+% wb_gains:     white-balance gains [G_r, G_g, G_b].
 % img_corr:     nonuniformity corrected image.
 
 if nargin == 1
@@ -49,4 +49,4 @@ end
 
 img_corr = img .* reciprocal_fit;
 
-gains = roi_mean(2) ./ squeeze(roi_mean)';
+wb_gains = roi_mean(2) ./ squeeze(roi_mean)';

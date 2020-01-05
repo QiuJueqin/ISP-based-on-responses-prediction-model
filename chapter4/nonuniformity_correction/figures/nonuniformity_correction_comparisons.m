@@ -8,7 +8,7 @@ data_config = parse_data_config;
 profile = load(fullfile(data_config.path, 'nonuniformity_correction\OV8858\nonuniformity_profile.mat'));
 
 pgm_name = 'Image92_4032_3024_gain1.187_shutter0.019.raw10.pgm';
-gains = [1.85, 1, 2.87];
+wb_gains = [1.85, 1, 2.87];
 
 % pgm_name = 'Image96_4032_3024_gain1.629_shutter0.019.raw10.pgm';
 % gains = [2.04, 1, 1.67];
@@ -20,7 +20,7 @@ pgm_dir = fullfile(data_config.path, 'nonuniformity_correction\OV8858', pgm_name
 
 img = pgmread(pgm_dir);
 
-img_corr = nonuniformity_corr(img, gains, profile.nonuniformity_profile);
+img_corr = nonuniformity_corr(img, wb_gains, profile.nonuniformity_profile);
 
 figure; imshow(img)
 figure; imshow(img_corr)

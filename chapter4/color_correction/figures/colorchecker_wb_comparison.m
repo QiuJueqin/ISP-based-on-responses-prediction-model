@@ -3,7 +3,6 @@ clear; close all; clc;
 DELTA_LAMBDA = 5;
 WAVELENGTHS = 400:DELTA_LAMBDA:700;
 ISO = 100;
-GAINS = [0.3535, 0.1621, 0.3489]; % ISO100
 T = 0.01; % 10ms
 
 data_config = parse_data_config;
@@ -30,11 +29,11 @@ cam_rgb = responses_predict(spectra/saturation, WAVELENGTHS, camera_config.respo
 assert(all(lin_srgb >= 0 & lin_srgb <= 1, 'all'));
 assert(all(cam_rgb >= 0 & cam_rgb <= 1, 'all'));
 
-gains = [cam_rgb(20:23, 1) \ lin_srgb(20:23, 1),...
-         cam_rgb(20:23, 2) \ lin_srgb(20:23, 2),...
-         cam_rgb(20:23, 3) \ lin_srgb(20:23, 3)];
+wb_gains = [cam_rgb(20:23, 1) \ lin_srgb(20:23, 1),...
+            cam_rgb(20:23, 2) \ lin_srgb(20:23, 2),...
+            cam_rgb(20:23, 3) \ lin_srgb(20:23, 3)];
 
-cam_rgb_wb = cam_rgb .* gains;
+cam_rgb_wb = cam_rgb .* wb_gains;
 
 % gamma correction
 srgb = lin_srgb .^ (1/2.2);

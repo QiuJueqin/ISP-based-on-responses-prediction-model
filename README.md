@@ -7,7 +7,7 @@
 ## 测试环境
 
 - Windows 10
-- MATLAB R2018b
+- MATLAB R2018a/R2018b
 
 
 ### MATLAB 所需工具箱
@@ -112,7 +112,7 @@ This repository contains codes for my doctoral thesis: [*Study on methodology an
 ## Test Environment
 
 - Windows 10
-- MATLAB R2018b
+- MATLAB R2018a/R2018b
 
 
 ### Required MATLAB Toolboxes

@@ -1,4 +1,4 @@
-function spline_coefs = gain2coefs(gains, maps, components)
+function spline_coefs = gain2coefs(wb_gains, maps, components)
 % GAINS2COEFS calculates B-spline surface coefficients using white-balance
 % gains, polynomial maps, and principal components.
 %
@@ -12,13 +12,13 @@ function spline_coefs = gain2coefs(gains, maps, components)
 % spline_coefs:   (n+1)*(n+1)*3 control points tensor for constructing
 %                 B-spline surfaces.
 
-assert(numel(gains) == 2);
+assert(numel(wb_gains) == 2);
 
 N = sqrt(size(components, 1)); % N = n+1
 
 spline_coefs = zeros(N, N, 3);
 
-polynomial = [1, gains(1), gains(2), gains(1)^2, gains(2)^2, gains(1)*gains(2)];
+polynomial = [1, wb_gains(1), wb_gains(2), wb_gains(1)^2, wb_gains(2)^2, wb_gains(1)*wb_gains(2)];
 for k = 1:3
     wgt = polynomial * maps(:, :, k);
     spline_coefs_ = wgt * components(:, :, k)';

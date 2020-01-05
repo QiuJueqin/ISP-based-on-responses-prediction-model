@@ -1,4 +1,4 @@
-function img_cc = cc(img, gains, cc_profile)
+function img_cc = cc(img, wb_gains, cc_profile)
 % color correction for input image according to its white-balance gains
 %
 % IMPORTANT NOTE:
@@ -19,8 +19,8 @@ else
     responses = img;
 end
 
-if iscolumn(gains)
-    gains = gains';
+if iscolumn(wb_gains)
+    wb_gains = wb_gains';
 end
 
 % use D65 as canonical illuminant
@@ -32,7 +32,7 @@ end
 canonical_illuminant_gains = cc_profile.gains(canonical_illuminant_idx, :);
 uv_train = gain2uv(cc_profile.gains, canonical_illuminant_gains);
 
-uv = gain2uv(gains, canonical_illuminant_gains);
+uv = gain2uv(wb_gains, canonical_illuminant_gains);
 
 distances = sum((uv_train - uv).^2, 2);
 [~, illuminant_idx] = min(distances);

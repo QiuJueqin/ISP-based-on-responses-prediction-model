@@ -24,9 +24,9 @@ for i = 3:numel(contents)
                   round(0.49*width) : round(0.51*width),...
                   :);
         roi_mean = mean(roi, [1, 2]);
-        gains = roi_mean(2) ./ squeeze(roi_mean)';
+        wb_gains = roi_mean(2) ./ squeeze(roi_mean)';
         
-        img_corr = nonuniformity_corr(img, gains, profile.nonuniformity_profile);
+        img_corr = nonuniformity_corr(img, wb_gains, profile.nonuniformity_profile);
 
         % smoothen
         img = imgaussfilt3(img(:, :, 2), 5); % only green channel

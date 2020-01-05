@@ -1,11 +1,11 @@
-function gains = weng(img)
+function wb_gains = weng(img)
 % modified from 
 % https://www.mathworks.com/matlabcentral/fileexchange/14294-program-color-balancing
 
 assert(max(img(:)) <= 1);
 std_illuminant_rgb = [0.4207, 1, 0.7713]; % only for Nikon D3x
-gains0 = 1 ./ std_illuminant_rgb;
-img = img .* reshape(gains0, 1, 1, 3);
+wb_gains0 = 1 ./ std_illuminant_rgb;
+img = img .* reshape(wb_gains0, 1, 1, 3);
 img = max(min(img, 1), 0);
 
 im1=rgb2ycbcr(img);
@@ -63,5 +63,5 @@ Ymax=double(max(max(Lu)))/15;
 Rgain=Ymax/Rav;
 Ggain=Ymax/Gav;
 Bgain=Ymax/Bav;
-gains = [Rgain, Ggain, Bgain] .* gains0;
-gains = gains / min(gains);
+wb_gains = [Rgain, Ggain, Bgain] .* wb_gains0;
+wb_gains = wb_gains / min(wb_gains);
