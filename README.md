@@ -1,7 +1,17 @@
 ## 简介
 
-本仓库提供了我的博士论文[《基于原始响应值预测模型的数码相机图像信号处理方法与技术研究》](thesis.pdf)相关代码，其中使用的数据可于 OneDrive（上传中）进行下载（\~129GB）。
+本仓库提供了我的博士论文[《基于原始响应值预测模型的数码相机图像信号处理方法与技术研究》](thesis.pdf)相关代码及实验数据
 
+## 数据
+
+所有数据存储于 OneDrive，合计约129GB。若无特别说明则均含有 Nikon D3x 与 SONY ILCE7 两台相机的 raw 数据及实验结果
+
+- [噪声标定](https://1drv.ms/u/s!AniPeh_FlASDhmCI5AXdhKiJpYMZ?e=iL36AM)（41.3GB）
+- [原始响应值预测](https://1drv.ms/u/s!AniPeh_FlASDhmLCEpMaGO9TlcgP?e=eZuJNf)（78.6GB）
+- [空间非均匀性标定](https://1drv.ms/u/s!AniPeh_FlASDhl98vdIwhpr601gX?e=jmuGF2)（139MB，仅含 SONY D3x）
+- [自动白平衡](https://1drv.ms/u/s!AniPeh_FlASDhmESwk9tooJqmpuF?e=wDhiHi)（8.2GB，仅含 SONY D3x）
+- [颜色校正](https://1drv.ms/u/s!AniPeh_FlASDhl0S20CELt5yBY45?e=YOkyrE)（1.2GB）
+- [高光谱图像](https://1drv.ms/u/s!AniPeh_FlASDhl51MDpnAQYmuod7?e=2D7elO)（352MB，收集自公开数据集）
 
 
 ## 测试环境
@@ -23,11 +33,11 @@
 
 ## 更新日志
 
-- 2019.07.04 - 完成论文初稿
-- 2019.12.04 - 根据盲审意见进行修改
-- 2019.12.17 - 根据答辩组意见进行修改
+- 2020.05.18 - 上传数据
 - 2019.12.18 - 定稿
-
+- 2019.12.17 - 根据答辩组意见进行修改
+- 2019.12.04 - 根据盲审意见进行修改
+- 2019.07.04 - 完成论文初稿
 
 
 ## 目录结构
@@ -105,8 +115,19 @@
 
 ## Intro
 
-This repository contains codes for my doctoral thesis: [*Study on methodology and technology of digital camera image signal processing based on raw responses prediction model*](thesis.pdf) (zh-cn). The data used in the experiments is available in my OneDrive (\~129GB).
+This repository contains codes for my doctoral thesis: [*Study on methodology and technology of digital camera image signal processing based on raw responses prediction model*](thesis.pdf) (zh-cn).
 
+
+## Data
+
+All data is stored in OneDrive, with total size of 129GB.
+
+- [Noise calibration](https://1drv.ms/u/s!AniPeh_FlASDhmCI5AXdhKiJpYMZ?e=iL36AM) (41.3GB, Nikon D3x and SONY ILCE7)
+- [Response prediction](https://1drv.ms/u/s!AniPeh_FlASDhmLCEpMaGO9TlcgP?e=eZuJNf) (78.6GB, Nikon D3x and SONY ILCE7)
+- [Non-uniformity correction](https://1drv.ms/u/s!AniPeh_FlASDhl98vdIwhpr601gX?e=jmuGF2) (139MB, only Nikon D3x)
+- [Auto white-balance](https://1drv.ms/u/s!AniPeh_FlASDhmESwk9tooJqmpuF?e=wDhiHi) (8.2GB, only Nikon D3x)
+- [Color correction](https://1drv.ms/u/s!AniPeh_FlASDhl0S20CELt5yBY45?e=YOkyrE) (1.2GB, Nikon D3x and SONY ILCE7)
+- [Hyperspectral images](https://1drv.ms/u/s!AniPeh_FlASDhl51MDpnAQYmuod7?e=2D7elO) (352MB, collected from public datasets)
 
 
 ## Test Environment
@@ -128,10 +149,11 @@ This repository contains codes for my doctoral thesis: [*Study on methodology an
 
 ## ChangeLog
 
-- 2019.07.04 - initial draft completed
-- 2019.12.04 - revised as per comments by anonymous reviewers
-- 2019.12.17 - revised as per comments by examining committee
+- 2020.05.18 - upload data
 - 2019.12.18 - thesis completed
+- 2019.12.17 - revised as per comments by examining committee
+- 2019.12.04 - revised as per comments by anonymous reviewers
+- 2019.07.04 - initial draft completed
 
 
 ## License
