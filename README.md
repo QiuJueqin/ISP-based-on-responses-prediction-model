@@ -8,8 +8,8 @@
 
 - [噪声标定](https://1drv.ms/u/s!AniPeh_FlASDhmCI5AXdhKiJpYMZ?e=iL36AM)（41.3GB）
 - [原始响应值预测](https://1drv.ms/u/s!AniPeh_FlASDhmLCEpMaGO9TlcgP?e=eZuJNf)（78.6GB）
-- [空间非均匀性标定](https://1drv.ms/u/s!AniPeh_FlASDhl98vdIwhpr601gX?e=jmuGF2)（139MB，仅含 SONY D3x）
-- [自动白平衡](https://1drv.ms/u/s!AniPeh_FlASDhmESwk9tooJqmpuF?e=wDhiHi)（8.2GB，仅含 SONY D3x）
+- [空间非均匀性标定](https://1drv.ms/u/s!AniPeh_FlASDhl98vdIwhpr601gX?e=jmuGF2)（139MB，仅含 Nikon D3x）
+- [自动白平衡](https://1drv.ms/u/s!AniPeh_FlASDhmESwk9tooJqmpuF?e=wDhiHi)（8.2GB，仅含 Nikon D3x）
 - [颜色校正](https://1drv.ms/u/s!AniPeh_FlASDhl0S20CELt5yBY45?e=YOkyrE)（1.2GB）
 - [高光谱图像](https://1drv.ms/u/s!AniPeh_FlASDhl51MDpnAQYmuod7?e=2D7elO)（352MB，收集自公开数据集）
 
